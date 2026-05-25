@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Le chrétien face à l'injustice — Édition de Prestige</title>
+    <!-- Tailwind CSS pour des fondations fluides -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome pour les icônes de luxe -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* DESIGN SYSTEM TOKENS - THÈMES DE LUXE */
+        :root {
+            --bg-primary: #FCFBF7;
+            --bg-secondary: #F6F4EE;
+            --text-main: #1E1E1E;
+            --text-muted: #5C5A54;
+            --accent: #B09468;
+            --accent-light: #F1ECE1;
+            --border-color: #E6E2D8;
+            --font-serif: 'Lora', 'Georgia', serif;
+            --font-display: 'Playfair Display', serif;
+            --font-title: 'Cinzel', serif;
+            --font-sans: 'Inter', sans-serif;
+            --reader-font-multiplier: 1;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-serif);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.8;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .theme-ivoire {
+            --bg-primary: #FCFBF7; --bg-secondary: #F5F3EC; --text-main: #1C1B19; --text-muted: #5E5A53; --accent: #B3956B; --accent-light: #F0EDE4; --border-color: #E5E1D5;
+        }
+        .theme-sauge {
+            --bg-primary: #F3F5F2; --bg-secondary: #E6EAE4; --text-main: #1F2D24; --text-muted: #536458; --accent: #86998A; --accent-light: #E1E7E1; --border-color: #D6DDD6;
+        }
+        .theme-argile {
+            --bg-primary: #FAF6F0; --bg-secondary: #EFE9DE; --text-main: #332621; --text-muted: #6C5C55; --accent: #B98D75; --accent-light: #F3ECE2; --border-color: #E5DACF;
+        }
+        .theme-nuit {
+            --bg-primary: #121212; --bg-secondary: #1E1E1E; --text-main: #E5E1DA; --text-muted: #9E9990; --accent: #D4B285; --accent-light: #2D2D2D; --border-color: #2F2F2F;
+        }
+
+        .font-cinzel { font-family: var(--font-title); }
+        .font-sans-ui { font-family: var(--font-sans); }
+
+        /* Lettrine stylisée et alignée */
+        .lettrine::first-letter {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 700;
+            float: left;
+            line-height: 0.85;
+            margin-right: 0.6rem;
+            margin-top: 0.2rem;
+            color: var(--accent);
+        }
+
+        /* Tiroirs coulissants ergonomiques pour mobile (Bottom Sheets) */
+        .drawer-overlay {
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .drawer-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+        .drawer-content {
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .drawer-content.active {
+            transform: translateY(0);
+        }
+
+        /* FILTRAGE STRICT DES PAGES ACTIVES (Plus de chevauchement possible) */
+        .page-pane { 
+            display: none !important; 
+        }
+        .page-pane.active { 
+            display: block !important; 
+            animation: fadeIn 0.4s ease-out; 
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(6px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Mise en page des éléments du livre */
+        .book-section p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .book-section blockquote {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            border-radius: 0 12px 12px 0;
+            color: var(--text-main);
+        }
+
+        .book-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .book-section h3, .book-section h4 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        /* Taille de police lecteur réellement appliquée aux contenus générés */
+        #reader-viewport .book-section p {
+            font-size: calc(0.875rem * var(--reader-font-multiplier)) !important;
+            line-height: var(--reader-line-height, 1.8) !important;
+        }
+
+        #reader-viewport .book-section blockquote {
+            font-size: calc(0.875rem * var(--reader-font-multiplier)) !important;
+            line-height: var(--reader-line-height, 1.8) !important;
+        }
+
+        #reader-viewport .book-section h2 {
+            font-size: calc(1.25rem * var(--reader-font-multiplier)) !important;
+        }
+
+        #reader-viewport .book-section h3,
+        #reader-viewport .book-section h4,
+        #reader-viewport .book-section h5,
+        #reader-viewport .book-section h6 {
+            font-size: calc(1.125rem * var(--reader-font-multiplier)) !important;
+        }
+
+        #reader-viewport .book-section .lettrine::first-letter {
+            font-size: calc(3.5rem * var(--reader-font-multiplier)) !important;
+        }
+
+        @media (min-width: 640px) {
+            #reader-viewport .book-section p,
+            #reader-viewport .book-section blockquote {
+                font-size: calc(1rem * var(--reader-font-multiplier)) !important;
+            }
+
+            #reader-viewport .book-section h2 {
+                font-size: calc(1.5rem * var(--reader-font-multiplier)) !important;
+            }
+        }
+
+
+
+        /* Affichage fiable des images importées depuis le manuscrit HTML */
+        .reader-content img,
+        .page-content img,
+        article img,
+        figure img {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
+        .cover-page,
+        figure.cover-page {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            text-align: center;
+        }
+
+        .cover-page img,
+        figure.cover-page img {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+
+        /* Réglages de confort de lecture ajoutés sans modifier le design existant */
+        .book-section p,
+        .book-section blockquote,
+        .book-section li {
+            line-height: var(--reader-line-height, 1.8) !important;
+        }
+
+        #reader-viewport {
+            max-width: var(--reader-content-max-width, 48rem) !important;
+            width: 100% !important;
+        }
+
+        #reader-viewport .book-section {
+            width: var(--reader-content-width-percent, 100%);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 640px) {
+            #reader-viewport {
+                padding-left: var(--reader-side-padding, 1rem) !important;
+                padding-right: var(--reader-side-padding, 1rem) !important;
+            }
+        }
+
+        .selection-action-menu {
+            position: fixed;
+            z-index: 90;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 6px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            font-family: var(--font-sans);
+            transform: translateX(-50%);
+            max-width: calc(100vw - 24px);
+        }
+
+        .selection-action-menu.active {
+            display: flex;
+        }
+
+        .selection-action-menu button {
+            border: none;
+            background-color: var(--bg-secondary);
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .selection-action-menu button:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* Pinterest card style */
+        .pinterest-card {
+            width: 260px;
+            aspect-ratio: 2 / 3;
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background-color: #FCFBF7;
+            color: #1E1E1E;
+            transition: all 0.3s ease;
+        }
+
+        .pin-border {
+            position: absolute;
+            inset: 12px;
+            border: 1px solid rgba(179, 149, 107, 0.3);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .pin-quote-text {
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            text-align: center;
+            margin: auto 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Toast notification */
+        .custom-popup {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: var(--text-main);
+            color: var(--bg-primary);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .custom-popup.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body class="theme-ivoire min-h-screen flex flex-col antialiased">
+
+    <!-- ÉCRAN D'ACCUEIL / IMPORTATION INITIALE -->
+    <div id="import-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-[var(--bg-primary)] overflow-y-auto">
+        <div class="max-w-md w-full text-center space-y-8 py-8">
+            <div class="space-y-3">
+                <span class="font-cinzel text-xs tracking-[0.3em] text-[var(--accent)] font-bold">ÉDITION DE PRESTIGE</span>
+                <div class="w-12 h-[1px] bg-[var(--accent)] mx-auto"></div>
+            </div>
+
+            <div class="space-y-4">
+                <h1 class="font-cinzel text-3xl sm:text-4xl font-bold tracking-normal leading-tight text-[var(--text-main)]">
+                    Le chrétien<br>
+                    <span class="italic font-serif font-light text-[var(--accent)] block mt-1">face à l'injustice</span>
+                </h1>
+                <p class="font-sans-ui text-xs tracking-widest text-[var(--text-muted)] uppercase">
+                    Pardon, vérité, justice et protection selon la Bible
+                </p>
+            </div>
+
+            <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] p-6 rounded-3xl text-left space-y-4">
+                <h3 class="font-cinzel text-xs font-bold tracking-wider text-[var(--accent)] uppercase flex items-center">
+                    <i class="fa-solid fa-cloud-arrow-up mr-2 text-sm"></i> Installation du Manuscrit
+                </h3>
+                <p class="text-xs text-[var(--text-main)] leading-relaxed font-sans-ui">
+                    Chargez votre fichier <strong class="text-[var(--accent)]">Le_chretien_face_a_l_injustice_manuscrit_integral_brut.html</strong> ci-dessous. Le système va compiler et mettre en page automatiquement vos 209 pages.
+                </p>
+                <p class="text-[10px] text-[var(--text-muted)] leading-relaxed font-sans-ui">
+                    <i class="fa-solid fa-circle-check text-green-500 mr-1"></i> Après chargement, le livre restera sauvegardé de façon permanente et sécurisée dans votre téléphone pour une lecture hors-ligne.
+                </p>
+            </div>
+
+            <div class="space-y-3">
+                <label class="w-full py-4 px-6 bg-[var(--accent)] hover:bg-opacity-90 text-[var(--bg-primary)] font-sans-ui text-xs font-bold uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center space-x-3 shadow-lg cursor-pointer text-center">
+                    <i class="fa-solid fa-file-import text-sm"></i>
+                    <span>Charger le manuscrit complet</span>
+                    <input type="file" id="init-file-input" accept=".html,.htm" class="hidden" onchange="importManuscript(event)">
+                </label>
+                <label class="w-full py-3 px-6 bg-transparent border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center space-x-3 cursor-pointer text-center">
+                    <i class="fa-solid fa-bolt text-xs"></i>
+                    <span>Forcer sans sauvegarde</span>
+                    <input type="file" id="init-file-input-session" accept=".html,.htm" class="hidden" onchange="importManuscript(event, { sessionOnly: true })">
+                </label>
+            </div>
+            
+            <p class="text-[10px] text-[var(--text-muted)] font-sans-ui">Tolotra Rakotondravony — Tous droits réservés</p>
+        </div>
+    </div>
+
+    <!-- ÉCRAN / POPUP DE CHARGEMENT ET DE PROGRESSION (Visual Loading Modal) -->
+    <div id="loader-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-black bg-opacity-75 backdrop-blur-md hidden transition-opacity duration-300">
+        <div class="max-w-xs w-full text-center space-y-6 bg-[var(--bg-primary)] p-8 rounded-3xl border border-[var(--border-color)] shadow-2xl">
+            <div class="relative flex justify-center items-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-4 border-[var(--border-color)] border-t-[var(--accent)]"></div>
+                <div id="loader-percentage" class="absolute font-sans-ui text-xs font-bold text-[var(--text-main)]">0%</div>
+            </div>
+            <div class="space-y-2">
+                <h4 id="loader-title" class="font-cinzel text-xs font-bold tracking-widest text-[var(--accent)] uppercase">Traitement</h4>
+                <p id="loader-desc" class="font-sans-ui text-xs text-[var(--text-muted)] leading-relaxed">Lecture du manuscrit...</p>
+            </div>
+            <!-- Barre de progression de chargement réelle -->
+            <div class="w-full h-1 bg-[var(--bg-secondary)] rounded-full overflow-hidden">
+                <div id="loader-progress-bar" class="h-full bg-[var(--accent)] transition-all duration-100" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER STATIQUE DE LECTURE -->
+    <header id="reading-header" class="hidden sticky top-0 z-30 bg-[var(--bg-primary)] border-b border-[var(--border-color)] px-4 py-3.5 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2 truncate max-w-[70%]">
+                <span class="font-cinzel text-[10px] tracking-[0.2em] text-[var(--accent)] font-bold hidden md:inline">EDITION INTEGRALE</span>
+                <span class="text-[var(--border-color)] hidden md:inline">|</span>
+                <h1 id="header-chapter-title" class="font-cinzel text-xs sm:text-sm tracking-wider font-bold uppercase truncate text-[var(--text-main)]">
+                    Introduction
+                </h1>
+            </div>
+            <div class="font-sans-ui text-xs text-[var(--text-muted)] tracking-wider shrink-0">
+                CHAPITRE <span id="top-page-num" class="font-semibold text-[var(--text-main)] bg-[var(--bg-secondary)] px-2.5 py-1 rounded border border-[var(--border-color)]">1</span> / <span id="top-total-pages">0</span>
+            </div>
+        </div>
+        <!-- Barre de progression de lecture -->
+        <div class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[var(--border-color)]">
+            <div id="top-progress-bar" class="h-full bg-[var(--accent)] transition-all duration-300" style="width: 0%"></div>
+        </div>
+    </header>
+
+    <!-- ZONE DE LECTURE PRINCIPALE -->
+    <div id="reading-workspace" class="hidden flex-1 max-w-7xl w-full mx-auto flex relative">
+        
+        <!-- SOMMAIRE FIXE (PC & Tablettes larges) -->
+        <aside class="hidden lg:block w-80 shrink-0 border-r border-[var(--border-color)] p-8 transition-colors duration-300 overflow-y-auto max-h-[calc(100vh-60px)] sticky top-[60px]">
+            <div class="space-y-8">
+                <div>
+                    <p class="font-cinzel text-[11px] tracking-[0.25em] text-[var(--accent)] font-bold uppercase mb-4">Sommaire Général</p>
+                    <div class="h-[1px] bg-[var(--border-color)] mb-4"></div>
+                    <nav id="pc-sidebar-menu" class="space-y-1 font-sans-ui text-xs max-h-[45vh] overflow-y-auto pr-1">
+                        <!-- Généré dynamiquement -->
+                    </nav>
+                </div>
+
+                <!-- Outils de style PC -->
+                <div class="p-5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-4">
+                    <p class="font-cinzel text-[10px] tracking-widest text-[var(--accent)] font-bold uppercase">Personnalisation</p>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider">Palette colorimétrique</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setTheme('ivoire')" class="h-8 rounded bg-[#FCFBF7] border border-gray-300 shadow-sm flex items-center justify-center text-xs" title="Ivoire"></button>
+                            <button onclick="setTheme('sauge')" class="h-8 rounded bg-[#F3F5F2] border border-gray-300 shadow-sm flex items-center justify-center text-xs" title="Sauge"></button>
+                            <button onclick="setTheme('argile')" class="h-8 rounded bg-[#FAF6F0] border border-gray-300 shadow-sm flex items-center justify-center text-xs" title="Argile"></button>
+                            <button onclick="setTheme('nuit')" class="h-8 rounded bg-[#121212] border border-gray-700 shadow-sm flex items-center justify-center text-xs" title="Nuit"></button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider">Taille du texte</label>
+                        <div class="flex items-center justify-between bg-[var(--bg-primary)] rounded-lg p-1 border border-[var(--border-color)]">
+                            <button onclick="adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-[var(--bg-secondary)] rounded text-xs font-bold">A-</button>
+                            <span id="pc-font-indicator" class="text-xs font-sans-ui font-medium text-[var(--text-muted)]">100%</span>
+                            <button onclick="adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center hover:bg-[var(--bg-secondary)] rounded text-xs font-bold">A+</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider">Interligne</label>
+                        <div class="grid grid-cols-3 gap-1 bg-[var(--bg-primary)] rounded-lg p-1 border border-[var(--border-color)]">
+                            <button onclick="setReaderLineHeight('compact')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Compact</button>
+                            <button onclick="setReaderLineHeight('normal')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Normal</button>
+                            <button onclick="setReaderLineHeight('comfort')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Confort</button>
+                        </div>
+                        <span id="pc-line-height-indicator" class="block text-[10px] font-sans-ui text-[var(--text-muted)]">Normal</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider">Largeur de lecture</label>
+                        <div class="grid grid-cols-3 gap-1 bg-[var(--bg-primary)] rounded-lg p-1 border border-[var(--border-color)]">
+                            <button onclick="setReaderWidth('narrow')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Étroit</button>
+                            <button onclick="setReaderWidth('normal')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Normal</button>
+                            <button onclick="setReaderWidth('wide')" class="py-2 rounded text-[10px] font-sans-ui font-bold hover:bg-[var(--bg-secondary)]">Large</button>
+                        </div>
+                        <span id="pc-width-indicator" class="block text-[10px] font-sans-ui text-[var(--text-muted)]">Normal</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider">Outils de lecture</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openReaderTools('search')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-magnifying-glass"></i><span>Recherche</span>
+                            </button>
+                            <button onclick="addManualBookmark()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-bookmark"></i><span>Marquer</span>
+                            </button>
+                            <button onclick="openReaderTools('bookmarks')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-list"></i><span>Marques</span>
+                            </button>
+                            <button onclick="addFavoriteQuote()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-star"></i><span>Favori</span>
+                            </button>
+                            <button onclick="openReaderTools('favorites')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-heart"></i><span>Favoris</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Option de ré-import -->
+                    <label class="w-full py-2.5 bg-transparent border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2 cursor-pointer text-center">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Réimporter le livre</span>
+                        <input type="file" id="file-uploader" accept=".html,.htm" class="hidden" onchange="importManuscript(event)">
+                    </label>
+
+                    <label class="w-full py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2 cursor-pointer text-center">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Importer sans sauvegarde</span>
+                        <input type="file" id="file-uploader-session" accept=".html,.htm" class="hidden" onchange="importManuscript(event, { sessionOnly: true })">
+                    </label>
+
+                    <button onclick="resetLiseuse()" class="w-full py-2.5 bg-transparent border border-red-500/30 text-red-500 hover:bg-red-500/5 font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Effacer la mémoire</span>
+                    </button>
+
+                    <button onclick="openPinterestStudio()" class="w-full py-3 px-4 bg-[var(--accent)] hover:bg-opacity-90 text-[var(--bg-primary)] font-sans-ui text-xs font-semibold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2 shadow-sm">
+                        <i class="fa-brands fa-pinterest text-sm"></i>
+                        <span>Pinterest Studio</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Zone d'affichage des chapitres filtrés -->
+        <main id="reader-viewport" class="flex-1 px-4 py-8 sm:py-12 md:px-12 lg:px-16 xl:px-20 max-w-3xl mx-auto transition-all duration-300 pb-28 lg:pb-16">
+            <div id="pages-container">
+                <!-- Les chapitres seront injectés ici -->
+            </div>
+
+            <!-- Boutons de pagination de bas de page -->
+            <div class="flex justify-between items-center mt-12 pt-6 border-t border-[var(--border-color)] font-sans-ui text-xs">
+                <button onclick="changePageDelta(-1)" id="prev-btn" class="flex items-center space-x-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors py-2 px-3 rounded-lg hover:bg-[var(--bg-secondary)]">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>PRÉCÉDENT</span>
+                </button>
+                <span id="bottom-page-indicator" class="text-[var(--text-muted)] tracking-widest uppercase font-bold text-[10px]">1 DE 22</span>
+                <button onclick="changePageDelta(1)" id="next-btn" class="flex items-center space-x-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors py-2 px-3 rounded-lg hover:bg-[var(--bg-secondary)]">
+                    <span>SUIVANT</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- NAVIGATION MOBILE COMPACTE BASSE -->
+    <div id="mobile-navigation-bar" class="hidden lg:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-primary)] border-t border-[var(--border-color)] z-40 px-2 py-2.5 flex justify-around items-center shadow-xl transition-colors duration-300">
+        <button onclick="openMobileDrawer('sommaire')" class="flex flex-col items-center space-y-1 py-1 px-2 text-[var(--text-muted)] hover:text-[var(--accent)]">
+            <i class="fa-solid fa-bookmark text-base"></i>
+            <span class="text-[9px] font-sans-ui tracking-wider font-bold uppercase">SOMMAIRE</span>
+        </button>
+        <button onclick="openMobileDrawer('format')" class="flex flex-col items-center space-y-1 py-1 px-2 text-[var(--text-muted)] hover:text-[var(--accent)]">
+            <i class="fa-solid fa-sliders text-base"></i>
+            <span class="text-[9px] font-sans-ui tracking-wider font-bold uppercase">FORMAT</span>
+        </button>
+        <button onclick="openMobileDrawer('outils')" class="flex flex-col items-center space-y-1 py-1 px-2 text-[var(--text-muted)] hover:text-[var(--accent)]">
+            <i class="fa-solid fa-screwdriver-wrench text-base"></i>
+            <span class="text-[9px] font-sans-ui tracking-wider font-bold uppercase">OUTILS</span>
+        </button>
+        <label class="flex flex-col items-center space-y-1 py-1 px-2 text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+            <span class="text-[9px] font-sans-ui tracking-wider font-bold uppercase">IMPORTER</span>
+            <input type="file" id="file-uploader-mobile" accept=".html,.htm" class="hidden" onchange="importManuscript(event)">
+        </label>
+        <button onclick="openPinterestStudio()" class="flex flex-col items-center space-y-1 py-1 px-2 text-[var(--accent)]">
+            <i class="fa-brands fa-pinterest text-base"></i>
+            <span class="text-[9px] font-sans-ui tracking-wider font-bold uppercase">STUDIO</span>
+        </button>
+    </div>
+
+    <!-- TIROIRS FLUIDES MOBILE (Bottom Sheets) -->
+    <div id="mobile-drawer-overlay" onclick="closeMobileDrawer()" class="drawer-overlay fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"></div>
+    <div id="mobile-drawer-content" class="drawer-content fixed bottom-0 left-0 right-0 bg-[var(--bg-primary)] rounded-t-3xl z-50 p-6 max-h-[75vh] overflow-y-auto border-t border-[var(--border-color)] transition-transform duration-300">
+        <div class="w-12 h-1 bg-[var(--border-color)] rounded-full mx-auto mb-5"></div>
+        <div id="drawer-inner-body"></div>
+    </div>
+
+    <!-- OUTILS DE LECTURE PREMIUM -->
+    <div id="reader-tools-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-3 sm:p-4 hidden backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-[var(--bg-primary)] text-[var(--text-main)] rounded-3xl max-w-2xl w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto relative border border-[var(--border-color)]">
+            <button onclick="closeReaderTools()" class="absolute top-3 right-3 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors p-2 z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="space-y-4">
+                <div>
+                    <span class="font-cinzel text-[10px] tracking-widest text-[var(--accent)] font-semibold uppercase">Outils de lecture</span>
+                    <h3 id="reader-tools-title" class="text-xl sm:text-2xl font-bold font-serif mt-1">Lecture Premium</h3>
+                </div>
+                <div id="reader-tools-body" class="font-sans-ui text-xs text-[var(--text-main)] space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENU FLOTTANT SUR SÉLECTION -->
+    <div id="selection-action-menu" class="selection-action-menu">
+        <button onclick="addSelectedTextToFavoritesFromMenu()"><i class="fa-solid fa-star mr-1"></i> Favori</button>
+        <button onclick="addBookmarkFromSelectionMenu()"><i class="fa-solid fa-bookmark mr-1"></i> Marque-page</button>
+    </div>
+
+    <!-- PINTEREST DESIGN STUDIO -->
+    <div id="pinterest-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-3 sm:p-4 hidden backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-[var(--bg-primary)] text-[var(--text-main)] rounded-3xl max-w-4xl w-full p-4 sm:p-6 md:p-8 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 max-h-[92vh] overflow-y-auto relative border border-[var(--border-color)]">
+            <button onclick="closePinterestStudio()" class="absolute top-3 right-3 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors p-2 z-10"><i class="fa-solid fa-xmark text-xl"></i></button>
+
+            <!-- Configurator Form (Left) -->
+            <div class="flex-1 space-y-5">
+                <div>
+                    <span class="font-cinzel text-[10px] tracking-widest text-[var(--accent)] font-semibold uppercase">CANVAS COMPANION</span>
+                    <h3 class="text-xl sm:text-2xl font-bold font-serif mt-1">Pinterest Aesthetics</h3>
+                    <p class="text-[11px] sm:text-xs text-[var(--text-muted)] font-sans-ui mt-1">Créez des visuels d'exception prêts à être publiés ou partagés.</p>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-sans-ui font-semibold uppercase tracking-wider text-[var(--accent)]">1. Texte de la citation</label>
+                    <textarea id="pin-text-input" oninput="drawPinCard()" class="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-main)] font-sans-ui text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent)] h-24 resize-none" placeholder="Écrivez ou modifiez la citation..."></textarea>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-sans-ui font-semibold uppercase tracking-wider text-[var(--accent)]">2. Palette esthétique</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-sans-ui">
+                        <button onclick="setPinPreset('ivoire')" class="p-2.5 rounded-xl border border-gray-300 bg-[#FCFBF7] text-[#1E1E1E] flex items-center justify-between font-medium"><span>Ivoire Royal</span><span class="w-3 h-3 rounded-full bg-[#B09468] border border-white"></span></button>
+                        <button onclick="setPinPreset('sauge')" class="p-2.5 rounded-xl border border-gray-300 bg-[#ECEFEA] text-[#24352B] flex items-center justify-between font-medium"><span>Sauge Sacrée</span><span class="w-3 h-3 rounded-full bg-[#86998A] border border-white"></span></button>
+                        <button onclick="setPinPreset('argile')" class="p-2.5 rounded-xl border border-gray-300 bg-[#F4EDE4] text-[#412E27] flex items-center justify-between font-medium"><span>Terre d'Argile</span><span class="w-3 h-3 rounded-full bg-[#B98D75] border border-white"></span></button>
+                        <button onclick="setPinPreset('nuit')" class="p-2.5 rounded-xl border border-gray-700 bg-[#1A1A1A] text-[#E5E1DA] flex items-center justify-between font-medium"><span>Nuit Solennelle</span><span class="w-3 h-3 rounded-full bg-[#D4B285] border border-white"></span></button>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-sans-ui font-semibold uppercase tracking-wider text-[var(--accent)]">3. Options de style</label>
+                    <div class="flex space-x-2 text-xs font-sans-ui">
+                        <button onclick="togglePinConfig('frame')" class="flex-1 py-2 px-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] hover:bg-[var(--accent-light)] transition-all">Cadre fin</button>
+                        <button onclick="togglePinConfig('symbol')" class="flex-1 py-2 px-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] hover:bg-[var(--accent-light)] transition-all">Symbole Croix</button>
+                        <button onclick="togglePinConfig('italic')" class="flex-1 py-2 px-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] hover:bg-[var(--accent-light)] transition-all">Italique</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previews Area -->
+            <div class="w-full md:w-[310px] shrink-0 flex flex-col justify-center items-center">
+                <div class="pinterest-card" id="pin-canvas">
+                    <div class="pin-border" id="pin-canvas-border"></div>
+                    <div class="text-center relative z-10">
+                        <span class="font-cinzel text-[7px] tracking-[0.25em] text-[#B3956B] font-bold block">MÉDITATION CHRÉTIENNE</span>
+                        <span id="pin-canvas-symbol" class="text-xs text-[#B3956B] block mt-1">†</span>
+                    </div>
+
+                    <p class="pin-quote-text" id="pin-canvas-text"></p>
+
+                    <div class="text-center relative z-10">
+                        <div class="w-6 h-[1px] bg-[#B3956B]/40 mx-auto block mb-1"></div>
+                        <span id="pin-canvas-origin" class="font-sans-ui text-[7px] tracking-[0.15em] text-slate-400 uppercase">Le chrétien face à l'injustice</span>
+                        <span class="font-sans-ui text-[8px] tracking-[0.05em] text-[#B3956B] font-semibold uppercase mt-0.5">Tolotra Rakotondravony</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST POPUP NOTIFICATION -->
+    <div class="custom-popup" id="custom-popup"></div>
+
+    <!-- SCRIPT DE FONCTIONNEMENT ET DE COMPILATION -->
+    <script>
+        let manuscriptBook = [];
+        let activeSecIndex = 1;
+        let fontScale = 100;
+        let activePinPreset = 'ivoire';
+        let pinConfig = { frame: true, symbol: true, italic: true };
+        let currentImportSessionOnly = false;
+        let readerTheme = 'ivoire';
+        let readerLineHeight = 'normal';
+        let readerWidthMode = 'normal';
+        let readerBookmarks = [];
+        let readerFavorites = [];
+        let shouldRestoreSavedScroll = false;
+        let pendingRestoreOffsetInSection = 0;
+        let isProgrammaticScroll = false;
+        let scrollSaveTimer = null;
+        const READER_STATE_KEY = "liseuse_reader_state_v4";
+        const READER_LIBRARY_KEY = "liseuse_reader_library_v1";
+        const READER_LINE_HEIGHTS = {
+            compact: { value: 1.55, label: "Compact" },
+            normal: { value: 1.8, label: "Normal" },
+            comfort: { value: 2.05, label: "Confort" }
+        };
+        const READER_WIDTHS = {
+            narrow: { value: "40rem", label: "Étroit", percent: "92%", sidePadding: "1.75rem" },
+            normal: { value: "48rem", label: "Normal", percent: "100%", sidePadding: "1rem" },
+            wide: { value: "58rem", label: "Large", percent: "100%", sidePadding: "0.5rem" }
+        };
+
+        // INITIALISATION SECURISÉE SANS BLOCAGE DE SCRIPT AVEC INDEXEDDB ET LOCALSTORAGE
+        const dbName = "LiseusePrestigeDB_v4";
+        const storeName = "manuscripts_v4";
+        const HEAVY_FILE_LIMIT_BYTES = 25 * 1024 * 1024;
+        const INDEXEDDB_TIMEOUT_MS = 3000;
+
+        function withTimeout(promise, ms, message) {
+            return new Promise((resolve, reject) => {
+                const timer = setTimeout(() => reject(new Error(message)), ms);
+                promise.then((value) => {
+                    clearTimeout(timer);
+                    resolve(value);
+                }).catch((error) => {
+                    clearTimeout(timer);
+                    reject(error);
+                });
+            });
+        }
+
+        function openIndexedDB() {
+            return withTimeout(new Promise((resolve, reject) => {
+                try {
+                    if (!window.indexedDB) {
+                        reject(new Error("IndexedDB non supporté"));
+                        return;
+                    }
+                    const request = indexedDB.open(dbName, 1);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(storeName)) {
+                            db.createObjectStore(storeName);
+                        }
+                    };
+                    request.onsuccess = (e) => resolve(e.target.result);
+                    request.onerror = (e) => reject(e.target.error);
+                    request.onblocked = () => reject(new Error("IndexedDB bloqué"));
+                } catch (err) {
+                    reject(err);
+                }
+            }), INDEXEDDB_TIMEOUT_MS, "IndexedDB trop lent ou bloqué");
+        }
+
+        const storage = {
+            async save(key, data, onProgress) {
+                if (typeof onProgress === "function") onProgress(95, "Sauvegarde", "Enregistrement dans IndexedDB...");
+                try {
+                    const db = await openIndexedDB();
+                    const tx = db.transaction(storeName, "readwrite");
+                    const store = tx.objectStore(storeName);
+                    store.put(data, key);
+                    await new Promise((resolve, reject) => {
+                        tx.oncomplete = () => resolve();
+                        tx.onerror = () => reject(tx.error);
+                        tx.onabort = () => reject(tx.error || new Error("Transaction IndexedDB interrompue"));
+                    });
+                    db.close();
+                    if (typeof onProgress === "function") onProgress(100, "Sauvegarde", "Livre sauvegardé dans la mémoire locale.");
+                    return { ok: true, mode: "indexeddb", persistent: true };
+                } catch (err) {
+                    console.warn("IndexedDB save failed, fallback to localStorage", err);
+                    if (typeof onProgress === "function") onProgress(97, "Sauvegarde", "IndexedDB indisponible, essai localStorage...");
+                    try {
+                        localStorage.setItem(key, JSON.stringify(data));
+                        if (typeof onProgress === "function") onProgress(100, "Sauvegarde", "Livre sauvegardé dans localStorage.");
+                        return { ok: true, mode: "localstorage", persistent: true };
+                    } catch (lsErr) {
+                        console.warn("localStorage save failed, fallback to memory storage", lsErr);
+                        window.__memory_book_cache = data;
+                        if (typeof onProgress === "function") onProgress(100, "Mode session", "Mémoire locale pleine : lecture disponible pour cette session.");
+                        return { ok: true, mode: "memory", persistent: false };
+                    }
+                }
+            },
+            async load(key) {
+                try {
+                    const db = await openIndexedDB();
+                    const tx = db.transaction(storeName, "readonly");
+                    const store = tx.objectStore(storeName);
+                    const req = store.get(key);
+                    const result = await new Promise((resolve, reject) => {
+                        req.onsuccess = () => resolve(req.result);
+                        req.onerror = () => reject(req.error);
+                    });
+                    db.close();
+                    if (result) return result;
+                } catch (err) {
+                    console.warn("IndexedDB load failed, fallback to localStorage", err);
+                }
+                try {
+                    const lsData = localStorage.getItem(key);
+                    if (lsData) return JSON.parse(lsData);
+                } catch (lsErr) {
+                    console.warn("localStorage load failed", lsErr);
+                }
+                return window.__memory_book_cache || null;
+            },
+            async clear() {
+                try {
+                    const db = await openIndexedDB();
+                    const tx = db.transaction(storeName, "readwrite");
+                    const store = tx.objectStore(storeName);
+                    store.delete("cached_book");
+                    await new Promise((resolve) => tx.oncomplete = () => resolve());
+                    db.close();
+                } catch (err) {
+                    console.warn("IndexedDB clear failed", err);
+                }
+                try {
+                    localStorage.removeItem("cached_book");
+                    localStorage.removeItem(READER_STATE_KEY);
+                } catch (err) {
+                    console.warn("localStorage clear failed", err);
+                }
+                window.__memory_book_cache = null;
+            }
+        };
+
+        // MÉMOIRE DE LECTURE : PAGE, LIGNE, THÈME ET TAILLE DE POLICE
+        function clampFontScale(value) {
+            const numericValue = Number(value);
+            if (!Number.isFinite(numericValue)) return 100;
+            return Math.min(Math.max(Math.round(numericValue), 80), 160);
+        }
+
+        function loadReaderState() {
+            try {
+                const rawState = localStorage.getItem(READER_STATE_KEY);
+                if (!rawState) return null;
+                const savedState = JSON.parse(rawState);
+                if (!savedState || typeof savedState !== 'object') return null;
+
+                if (savedState.theme) readerTheme = savedState.theme;
+                if (savedState.lineHeight && READER_LINE_HEIGHTS[savedState.lineHeight]) readerLineHeight = savedState.lineHeight;
+                if (savedState.readerWidth && READER_WIDTHS[savedState.readerWidth]) readerWidthMode = savedState.readerWidth;
+                if (Number.isFinite(Number(savedState.fontScale))) fontScale = clampFontScale(savedState.fontScale);
+                if (Number.isFinite(Number(savedState.activeSecIndex))) activeSecIndex = Math.max(1, Math.round(Number(savedState.activeSecIndex)));
+                if (Number.isFinite(Number(savedState.offsetInSection))) pendingRestoreOffsetInSection = Math.max(0, Number(savedState.offsetInSection));
+
+                return savedState;
+            } catch (err) {
+                console.warn("Lecture de la mémoire de lecture impossible", err);
+                return null;
+            }
+        }
+
+        function applyReaderPreferences(skipSave = false) {
+            document.body.className = `theme-${readerTheme} min-h-screen flex flex-col antialiased`;
+            document.documentElement.style.setProperty('--reader-font-multiplier', `${fontScale / 100}`);
+            document.documentElement.style.setProperty('--reader-line-height', `${READER_LINE_HEIGHTS[readerLineHeight].value}`);
+            document.documentElement.style.setProperty('--reader-content-max-width', READER_WIDTHS[readerWidthMode].value);
+            document.documentElement.style.setProperty('--reader-content-width-percent', READER_WIDTHS[readerWidthMode].percent || '100%');
+            document.documentElement.style.setProperty('--reader-side-padding', READER_WIDTHS[readerWidthMode].sidePadding || '1rem');
+
+            const viewport = document.getElementById('reader-viewport');
+            if (viewport) {
+                viewport.style.fontSize = `${fontScale / 100}rem`;
+                viewport.style.maxWidth = READER_WIDTHS[readerWidthMode].value;
+                viewport.style.width = '100%';
+            }
+
+            const pcFontIndicator = document.getElementById('pc-font-indicator');
+            if (pcFontIndicator) pcFontIndicator.innerText = `${fontScale}%`;
+
+            const mobileFontIndicator = document.getElementById('mobile-font-indicator');
+            if (mobileFontIndicator) mobileFontIndicator.innerText = `${fontScale}%`;
+
+            const pcLineHeightIndicator = document.getElementById('pc-line-height-indicator');
+            if (pcLineHeightIndicator) pcLineHeightIndicator.innerText = READER_LINE_HEIGHTS[readerLineHeight].label;
+
+            const mobileLineHeightIndicator = document.getElementById('mobile-line-height-indicator');
+            if (mobileLineHeightIndicator) mobileLineHeightIndicator.innerText = READER_LINE_HEIGHTS[readerLineHeight].label;
+
+            const pcWidthIndicator = document.getElementById('pc-width-indicator');
+            if (pcWidthIndicator) pcWidthIndicator.innerText = READER_WIDTHS[readerWidthMode].label;
+
+            const mobileWidthIndicator = document.getElementById('mobile-width-indicator');
+            if (mobileWidthIndicator) mobileWidthIndicator.innerText = READER_WIDTHS[readerWidthMode].label;
+
+            if (!skipSave) saveReaderState();
+        }
+
+        function saveReaderState() {
+            if (!manuscriptBook || manuscriptBook.length === 0) return;
+
+            try {
+                const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const activePageNode = document.getElementById(`section-page-${activeSecIndex}`);
+                let offsetInSection = currentScrollY;
+
+                if (activePageNode) {
+                    const pageTop = activePageNode.getBoundingClientRect().top + currentScrollY;
+                    offsetInSection = Math.max(0, currentScrollY - pageTop);
+                }
+
+                const readerState = {
+                    activeSecIndex: activeSecIndex,
+                    offsetInSection: offsetInSection,
+                    theme: readerTheme,
+                    fontScale: fontScale,
+                    lineHeight: readerLineHeight,
+                    readerWidth: readerWidthMode,
+                    savedAt: Date.now()
+                };
+
+                localStorage.setItem(READER_STATE_KEY, JSON.stringify(readerState));
+            } catch (err) {
+                console.warn("Sauvegarde de la mémoire de lecture impossible", err);
+            }
+        }
+
+        function scheduleReaderStateSave() {
+            if (isProgrammaticScroll) return;
+            clearTimeout(scrollSaveTimer);
+            scrollSaveTimer = setTimeout(() => {
+                saveReaderState();
+            }, 250);
+        }
+
+        // CYCLE DE VIE PRINCIPAL
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                loadReaderLibrary();
+                await checkSavedBook();
+            } catch (err) {
+                console.error("Initialization error:", err);
+                hideVisualLoader();
+            }
+            
+            // Écouteurs d'événements tactiles précis
+            const viewport = document.getElementById('reader-viewport');
+            if (viewport) {
+                viewport.addEventListener('touchstart', e => {
+                    if (!e.changedTouches || !e.changedTouches[0]) return;
+                    touchStartX = e.changedTouches[0].screenX;
+                    touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                viewport.addEventListener('touchend', e => {
+                    if (!e.changedTouches || !e.changedTouches[0]) return;
+                    touchEndX = e.changedTouches[0].screenX;
+                    touchEndY = e.changedTouches[0].screenY;
+                    handleTouchSwipe();
+                }, { passive: true });
+            }
+
+            document.addEventListener('selectionchange', () => {
+                setTimeout(updateSelectionActionMenu, 80);
+            });
+
+            document.addEventListener('mouseup', () => {
+                setTimeout(updateSelectionActionMenu, 80);
+            });
+
+            document.addEventListener('touchend', () => {
+                setTimeout(updateSelectionActionMenu, 260);
+            }, { passive: true });
+
+            window.addEventListener('scroll', () => {
+                hideSelectionActionMenu();
+                scheduleReaderStateSave();
+            }, { passive: true });
+            window.addEventListener('pagehide', saveReaderState);
+            window.addEventListener('beforeunload', saveReaderState);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) saveReaderState();
+            });
+        });
+
+        async function checkSavedBook() {
+            showVisualLoader(0, "Mémorisation", "Vérification de la mémoire locale...");
+            const savedData = await storage.load("cached_book");
+            if (savedData && savedData.length > 0) {
+                manuscriptBook = savedData;
+
+                const savedReaderState = loadReaderState();
+                if (savedReaderState) {
+                    activeSecIndex = Math.min(Math.max(activeSecIndex, 1), manuscriptBook.length);
+                    shouldRestoreSavedScroll = true;
+                } else {
+                    activeSecIndex = 1;
+                    shouldRestoreSavedScroll = false;
+                }
+
+                hideWelcomeScreen();
+                applyReaderPreferences(true);
+                compileAndBuild({ restorePosition: shouldRestoreSavedScroll });
+                hideVisualLoader();
+            } else {
+                hideVisualLoader();
+            }
+        }
+
+        // OUTILS DE BARRES DE PROGRESSION DE CHARGEMENT VISUEL
+        function showVisualLoader(percent, title, description) {
+            const safePercent = Math.min(Math.max(Number(percent) || 0, 0), 100);
+            const loader = document.getElementById('loader-screen');
+            if (loader) loader.classList.remove('hidden');
+            
+            const pctEl = document.getElementById('loader-percentage');
+            if (pctEl) pctEl.innerText = `${safePercent}%`;
+
+            const ttlEl = document.getElementById('loader-title');
+            if (ttlEl) ttlEl.innerText = title;
+
+            const descEl = document.getElementById('loader-desc');
+            if (descEl) descEl.innerText = description;
+
+            const barEl = document.getElementById('loader-progress-bar');
+            if (barEl) barEl.style.width = `${safePercent}%`;
+        }
+
+        function hideVisualLoader() {
+            const loader = document.getElementById('loader-screen');
+            if (loader) loader.classList.add('hidden');
+        }
+
+        // 2. PARSER ROBUSTE & CHUNKÉ AVEC RENDU DE BARRES DE PROGRESSION RÉELLES
+        function importManuscript(event, options = {}) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            currentImportSessionOnly = Boolean(options.sessionOnly);
+
+            if (file.size > HEAVY_FILE_LIMIT_BYTES) {
+                showPopup("Fichier lourd détecté : le traitement peut prendre plus de temps sur mobile.");
+            }
+
+            showVisualLoader(1, "Lecture", currentImportSessionOnly ? "Ouverture en mode session sans sauvegarde..." : "Ouverture de votre fichier...");
+
+            const reader = new FileReader();
+            
+            // Barre de progression réelle pour la lecture physique du fichier (1% à 30%)
+            reader.onprogress = function(data) {
+                if (data.lengthComputable && data.total > 0) {
+                    const readPercent = Math.round((data.loaded / data.total) * 100);
+                    const progressVal = Math.min(Math.max(Math.round(readPercent * 0.3), 1), 30);
+                    showVisualLoader(progressVal, "Lecture", `Récupération du manuscrit... (${readPercent}%)`);
+                } else {
+                    showVisualLoader(5, "Lecture", "Récupération du manuscrit...");
+                }
+            };
+
+            reader.onerror = function(err) {
+                console.error("FileReader Error:", err);
+                hideVisualLoader();
+                showPopup("Impossible de lire le fichier sur ce mobile.");
+            };
+
+            reader.onload = function(e) {
+                const rawHTMLText = e.target.result;
+                showVisualLoader(30, "Indexation", "Lancement du compilateur asynchrone...");
+                
+                // On passe à la compilation de manière découpée pour ne pas geler l'interface du mobile
+                setTimeout(() => {
+                    parseAndCompileHtmlAsync(rawHTMLText);
+                }, 100);
+            };
+            
+            try {
+                reader.readAsText(file, 'utf-8');
+            } catch (err) {
+                console.error("FileReader readAsText Error:", err);
+                hideVisualLoader();
+                showPopup("Impossible de lancer la lecture du fichier.");
+            }
+        }
+
+        function getCleanText(node) {
+            if (!node) return "";
+            return (node.innerText || node.textContent || "").trim();
+        }
+
+        function escapeImportedText(value) {
+            const div = document.createElement('div');
+            div.textContent = value || "";
+            return div.innerHTML;
+        }
+
+        function sanitizeImportedElement(node) {
+            const clone = node.cloneNode(true);
+
+            clone.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
+            clone.querySelectorAll('*').forEach(el => {
+                Array.from(el.attributes).forEach(attr => {
+                    const name = attr.name.toLowerCase();
+                    const value = attr.value || "";
+                    if (name.startsWith('on')) {
+                        el.removeAttribute(attr.name);
+                    }
+                    if ((name === 'href' || name === 'src') && /^javascript:/i.test(value.trim())) {
+                        el.removeAttribute(attr.name);
+                    }
+                });
+            });
+
+            return clone;
+        }
+
+        function buildImportedElementHtml(node, currentSection) {
+            const tag = node.tagName.toUpperCase();
+            const text = getCleanText(node);
+            const clone = sanitizeImportedElement(node);
+
+            if (tag === 'BLOCKQUOTE') {
+                clone.classList.add('font-serif', 'italic', 'text-sm', 'sm:text-base', 'my-6', 'p-5', 'border-l-4', 'border-[var(--accent)]', 'bg-[var(--bg-secondary)]', 'rounded-r-xl');
+                return clone.outerHTML;
+            }
+
+            if (['H3', 'H4', 'H5', 'H6'].includes(tag)) {
+                clone.classList.add('font-serif', 'text-lg', 'font-bold', 'mt-6', 'mb-3', 'text-[var(--text-main)]');
+                return clone.outerHTML;
+            }
+
+            if (tag === 'P') {
+                clone.classList.add('text-justify', 'text-sm', 'sm:text-base', 'mb-4', 'leading-relaxed');
+                const hasOnlyTitle = currentSection && currentSection.nodes.length === 1;
+                if (hasOnlyTitle && text.length > 50) {
+                    clone.classList.add('lettrine');
+                }
+                return clone.outerHTML;
+            }
+
+            if (['FIGURE', 'PICTURE', 'IMG', 'SOURCE'].includes(tag)) {
+                if (tag === 'FIGURE') {
+                    clone.classList.add('my-6');
+                }
+                if (tag === 'IMG') {
+                    clone.setAttribute('loading', clone.getAttribute('loading') || 'lazy');
+                    clone.setAttribute('decoding', clone.getAttribute('decoding') || 'async');
+                }
+                return clone.outerHTML;
+            }
+
+            return clone.outerHTML;
+        }
+
+        function finalizeSectionBeforePush(section, compiledSections) {
+            if (!section || section.nodes.length === 0) return;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = section.nodes.join('');
+            const bq = tempDiv.querySelector('blockquote');
+            const fp = tempDiv.querySelector('p:not(.section-title)');
+            const img = tempDiv.querySelector('img');
+            section.quote = bq ? getCleanText(bq) : (fp ? getCleanText(fp) : (img ? (img.getAttribute('alt') || section.title) : section.title));
+
+            compiledSections.push(section);
+        }
+
+        // Traitement par lot asynchrone (Anti-Freeze d'écran)
+        function parseAndCompileHtmlAsync(htmlText) {
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+                const body = doc.body || doc.documentElement;
+
+                body.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
+                
+                // Sélection des éléments utiles du manuscrit, y compris les images et leurs conteneurs.
+                const importSelector = 'h1, h2, h3, h4, h5, h6, p, blockquote, figure, picture, img, source, div.cover-page, section.cover-page';
+                const rawElements = Array.from(body.querySelectorAll(importSelector));
+                const selectedContainerTags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'BLOCKQUOTE', 'FIGURE', 'PICTURE'];
+                
+                // Filtre absolu contre les duplications : une image dans un <figure> reste dans le <figure>, sans doublon.
+                const allElements = rawElements.filter(el => {
+                    let parent = el.parentElement;
+                    while (parent && parent !== body) {
+                        if (selectedContainerTags.includes(parent.tagName)) {
+                            return false;
+                        }
+                        if ((parent.tagName === 'DIV' || parent.tagName === 'SECTION') && parent.classList && parent.classList.contains('cover-page')) {
+                            return false;
+                        }
+                        parent = parent.parentElement;
+                    }
+                    return true;
+                });
+
+                const totalNodes = allElements.length;
+
+                if (totalNodes === 0) {
+                    throw new Error("Aucune balise de titre, paragraphe ou image n'a été détectée.");
+                }
+
+                let compiledSections = [];
+                let currentSection = null;
+                let secId = 1;
+                let i = 0;
+                
+                function processChunk() {
+                    try {
+                        const chunkSize = htmlText.length > HEAVY_FILE_LIMIT_BYTES ? 80 : 150;
+                        const nextLimit = Math.min(i + chunkSize, totalNodes);
+
+                        for (; i < nextLimit; i++) {
+                            const node = allElements[i];
+                            const tag = node.tagName.toUpperCase();
+                            const text = getCleanText(node);
+                            const hasImageContent = Boolean(node.matches('img, picture, figure, source, div.cover-page, section.cover-page') || node.querySelector('img, picture, source'));
+
+                            // Filtres et nettoyage (La Maxime, signatures doublées, titres vides). Les images sont conservées même sans texte.
+                            if (!text && !hasImageContent && tag !== 'HR') continue;
+                            if (!hasImageContent && text === "Le chrétien face à l’injustice" && ['P'].includes(tag)) {
+                                if (secId > 1) continue;
+                            }
+                            if (!hasImageContent && text === "Pardon, vérité, justice et protection selon la Bible" && secId > 1) continue;
+                            if (!hasImageContent && text.includes("La Maxime")) continue;
+
+                            // Splits intelligents : H1/H2 restent les vrais titres de chapitre.
+                            const isMainHeading = ['H1', 'H2'].includes(tag);
+                            const isSpecialChapterStart = ['H3', 'H4', 'H5'].includes(tag) && 
+                                ["Orientation du livre", "Avant-propos", "Dédicace", "Page de titre"].some(title => text.toLowerCase().includes(title.toLowerCase()));
+
+                            if (isMainHeading || isSpecialChapterStart) {
+                                finalizeSectionBeforePush(currentSection, compiledSections);
+                                
+                                let titleText = text;
+                                if (tag === 'H1' && secId === 1) {
+                                    titleText = "Couverture";
+                                }
+
+                                currentSection = {
+                                    id: secId++,
+                                    title: titleText || "Sans titre",
+                                    nodes: []
+                                };
+                                currentSection.nodes.push(`<h2 class="section-title text-center text-xl sm:text-2xl font-bold font-serif my-6 uppercase tracking-wider" style="color: var(--accent);">${escapeImportedText(titleText || "Sans titre")}</h2>`);
+                            } else {
+                                if (!currentSection) {
+                                    currentSection = {
+                                        id: secId++,
+                                        title: "Couverture",
+                                        nodes: []
+                                    };
+                                }
+
+                                currentSection.nodes.push(buildImportedElementHtml(node, currentSection));
+                            }
+                        }
+
+                        // Jauge visuelle d'indexation (de 30% à 90%)
+                        const indexingProgress = Math.round(30 + ((i / totalNodes) * 60));
+                        showVisualLoader(indexingProgress, "Indexation", `Mise en page des chapitres... (${Math.round((i / totalNodes) * 100)}%)`);
+
+                        if (i < totalNodes) {
+                            requestAnimationFrame(processChunk);
+                        } else {
+                            finalizeSectionBeforePush(currentSection, compiledSections);
+                            finalizeCompilation(compiledSections);
+                        }
+                    } catch (innerErr) {
+                        console.error("Inner Parsing Error:", innerErr);
+                        hideVisualLoader();
+                        showPopup("Erreur de compilation : " + innerErr.message);
+                    }
+                }
+
+                requestAnimationFrame(processChunk);
+
+            } catch (outerErr) {
+                console.error("Outer Parsing Error:", outerErr);
+                hideVisualLoader();
+                showPopup("Fichier illisible : " + outerErr.message);
+            }
+        }
+
+        async function finalizeCompilation(sections) {
+            if (sections.length > 0) {
+                manuscriptBook = sections;
+                activeSecIndex = 1;
+                pendingRestoreOffsetInSection = 0;
+                shouldRestoreSavedScroll = false;
+                saveReaderState();
+
+                if (currentImportSessionOnly) {
+                    showVisualLoader(100, "Mode session", "Compilation terminée sans sauvegarde locale.");
+                    window.__memory_book_cache = manuscriptBook;
+                    setTimeout(() => {
+                        hideVisualLoader();
+                        hideWelcomeScreen();
+                        applyReaderPreferences(true);
+                        compileAndBuild({ restorePosition: false });
+                        showPopup(`Livre prêt en mode session : ${manuscriptBook.length} chapitres.`);
+                    }, 400);
+                    return;
+                }
+                
+                // Écrit proprement dans IndexedDB, avec fallback contrôlé
+                const saveResult = await storage.save("cached_book", manuscriptBook, showVisualLoader);
+
+                setTimeout(() => {
+                    hideVisualLoader();
+                    hideWelcomeScreen();
+                    applyReaderPreferences(true);
+                    compileAndBuild({ restorePosition: false });
+                    if (saveResult && saveResult.persistent) {
+                        showPopup(`Félicitations ! Votre livre de ${manuscriptBook.length} chapitres est prêt.`);
+                    } else {
+                        showPopup(`Livre prêt en mode session : mémoire locale pleine ou indisponible.`);
+                    }
+                }, 400);
+            } else {
+                hideVisualLoader();
+                showPopup("Aucun chapitre valide trouvé. Vérifiez le fichier HTML.");
+            }
+        }
+
+        // 3. AFFICHAGE DES ÉCRANS & CONSTITUTION DES VUES
+        function hideWelcomeScreen() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const importScreen = document.getElementById('import-screen');
+            const readingHeader = document.getElementById('reading-header');
+            const readingWorkspace = document.getElementById('reading-workspace');
+            const mobileNavigationBar = document.getElementById('mobile-navigation-bar');
+
+            if (welcomeScreen) welcomeScreen.classList.add('hidden');
+            if (importScreen) importScreen.classList.add('hidden');
+            if (readingHeader) readingHeader.classList.remove('hidden');
+            if (readingWorkspace) readingWorkspace.classList.remove('hidden');
+            if (mobileNavigationBar) mobileNavigationBar.classList.remove('hidden');
+        }
+
+        async function resetLiseuse() {
+            if (confirm("Voulez-vous supprimer ce livre de la mémoire locale de l'application ?")) {
+                await storage.clear();
+                location.reload();
+            }
+        }
+
+        function getRenderedSectionHtml(sec) {
+            const rawHtml = sec.nodes.join('');
+            const titleText = (sec.title || '').trim().toLowerCase();
+
+            if (titleText === 'couverture') {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = rawHtml;
+
+                if (tempDiv.querySelector('img')) {
+                    const visibleTitle = tempDiv.querySelector('.section-title');
+                    if (visibleTitle) visibleTitle.remove();
+                    return tempDiv.innerHTML;
+                }
+            }
+
+            return rawHtml;
+        }
+
+        function compileAndBuild(options = {}) {
+            const pagesBox = document.getElementById('pages-container');
+            const pcNav = document.getElementById('pc-sidebar-menu');
+
+            if (!pagesBox || !pcNav) {
+                showPopup("Erreur d'affichage : zone de lecture introuvable.");
+                return;
+            }
+
+            activeSecIndex = Math.min(Math.max(activeSecIndex, 1), manuscriptBook.length || 1);
+            applyReaderPreferences(true);
+
+            pagesBox.innerHTML = '';
+            pcNav.innerHTML = '';
+
+            manuscriptBook.forEach((sec, idx) => {
+                // Création et injection physique de la page
+                const pane = document.createElement('article');
+                pane.id = `section-page-${sec.id}`;
+                pane.className = `page-pane ${sec.id === activeSecIndex ? 'active' : ''}`;
+                pane.innerHTML = `<div class="book-section">${getRenderedSectionHtml(sec)}</div>`;
+                pagesBox.appendChild(pane);
+
+                // Création du lien dans le sommaire
+                const btn = document.createElement('button');
+                btn.id = `sidebar-link-${sec.id}`;
+                btn.onclick = () => jumpToSection(sec.id);
+                btn.className = "pc-nav-item w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-3 transition-all text-[var(--text-muted)] hover:bg-[var(--bg-secondary)]";
+                
+                const indexPrefixed = sec.id < 10 ? `0${sec.id}` : `${sec.id}`;
+                btn.innerHTML = `
+                    <span class="font-bold text-[var(--accent)] w-5 shrink-0 text-center text-xs">${indexPrefixed}</span>
+                    <span class="font-semibold truncate max-w-[170px] uppercase text-[11px]">${sec.title}</span>
+                `;
+                pcNav.appendChild(btn);
+            });
+
+            document.getElementById('top-total-pages').innerText = manuscriptBook.length;
+            updateDisplay({ restorePosition: Boolean(options.restorePosition) });
+        }
+
+        function jumpToSection(id) {
+            if (id < 1 || id > manuscriptBook.length) return;
+            activeSecIndex = id;
+            pendingRestoreOffsetInSection = 0;
+            updateDisplay({ restorePosition: false });
+        }
+
+        function changePageDelta(delta) {
+            jumpToSection(activeSecIndex + delta);
+        }
+
+        function updateDisplay(options = {}) {
+            // Filtrer la page active (Masquage de toutes les autres)
+            document.querySelectorAll('.page-pane').forEach(el => el.classList.remove('active'));
+            const activePageNode = document.getElementById(`section-page-${activeSecIndex}`);
+            if (activePageNode) activePageNode.classList.add('active');
+
+            // Marquer comme actif le lien du sommaire PC
+            document.querySelectorAll('.pc-nav-item').forEach(el => el.classList.remove('bg-[var(--bg-secondary)]', 'text-[var(--text-main)]', 'border-l-4', 'border-[var(--accent)]'));
+            const activeNav = document.getElementById(`sidebar-link-${activeSecIndex}`);
+            if (activeNav) activeNav.classList.add('bg-[var(--bg-secondary)]', 'text-[var(--text-main)]', 'border-l-4', 'border-[var(--accent)]');
+
+            // Mise à jour de l'en-tête
+            const currentObj = manuscriptBook.find(s => s.id === activeSecIndex);
+            if (currentObj) {
+                document.getElementById('header-chapter-title').innerText = currentObj.title;
+            }
+
+            document.getElementById('top-page-num').innerText = activeSecIndex;
+            document.getElementById('bottom-page-indicator').innerText = `${activeSecIndex} DE ${manuscriptBook.length}`;
+
+            // Calcul de la barre de progression
+            const percent = manuscriptBook.length > 0 ? (activeSecIndex / manuscriptBook.length) * 100 : 0;
+            const topProgressBar = document.getElementById('top-progress-bar');
+            if (topProgressBar) topProgressBar.style.width = `${percent}%`;
+
+            // Désactivation des triggers à l'extrémité
+            document.getElementById('prev-btn').style.opacity = activeSecIndex === 1 ? '0.2' : '1';
+            document.getElementById('next-btn').style.opacity = activeSecIndex === manuscriptBook.length ? '0.2' : '1';
+
+            const shouldRestore = Boolean(options.restorePosition);
+            isProgrammaticScroll = true;
+
+            requestAnimationFrame(() => {
+                let targetScroll = 0;
+
+                if (shouldRestore && activePageNode) {
+                    const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                    const pageTop = activePageNode.getBoundingClientRect().top + currentScrollY;
+                    targetScroll = Math.max(0, pageTop + pendingRestoreOffsetInSection);
+                }
+
+                window.scrollTo({ top: targetScroll, behavior: shouldRestore ? 'auto' : 'smooth' });
+
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                    saveReaderState();
+                    shouldRestoreSavedScroll = false;
+                }, shouldRestore ? 250 : 700);
+            });
+        }
+
+        // 4. DESIGN TOKENS ET STYLE
+        function adjustFontSize(delta) {
+            fontScale = clampFontScale(fontScale + (delta * 10));
+            applyReaderPreferences(false);
+        }
+
+        function setTheme(themeName) {
+            readerTheme = themeName;
+            applyReaderPreferences(false);
+        }
+
+        function setReaderLineHeight(mode) {
+            if (!READER_LINE_HEIGHTS[mode]) return;
+            readerLineHeight = mode;
+            applyReaderPreferences(false);
+            showPopup(`Interligne : ${READER_LINE_HEIGHTS[mode].label}`);
+        }
+
+        function setReaderWidth(mode) {
+            if (!READER_WIDTHS[mode]) return;
+            readerWidthMode = mode;
+            applyReaderPreferences(false);
+            showPopup(`Largeur : ${READER_WIDTHS[mode].label}`);
+        }
+
+        function loadReaderLibrary() {
+            try {
+                const rawLibrary = localStorage.getItem(READER_LIBRARY_KEY);
+                if (!rawLibrary) return;
+                const parsed = JSON.parse(rawLibrary);
+                readerBookmarks = Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [];
+                readerFavorites = Array.isArray(parsed.favorites) ? parsed.favorites : [];
+            } catch (err) {
+                console.warn("Lecture des outils de lecture impossible", err);
+                readerBookmarks = [];
+                readerFavorites = [];
+            }
+        }
+
+        function saveReaderLibrary() {
+            try {
+                localStorage.setItem(READER_LIBRARY_KEY, JSON.stringify({
+                    bookmarks: readerBookmarks,
+                    favorites: readerFavorites
+                }));
+                return true;
+            } catch (err) {
+                console.warn("Sauvegarde des outils de lecture impossible", err);
+                showPopup("Mémoire pleine : données gardées pour cette session.");
+                return false;
+            }
+        }
+
+        function getCurrentSectionObject() {
+            return manuscriptBook.find(s => s.id === activeSecIndex) || null;
+        }
+
+        function getCurrentOffsetInSection() {
+            const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const activePageNode = document.getElementById(`section-page-${activeSecIndex}`);
+            if (!activePageNode) return Math.max(0, currentScrollY);
+            const pageTop = activePageNode.getBoundingClientRect().top + currentScrollY;
+            return Math.max(0, currentScrollY - pageTop);
+        }
+
+        function getPlainTextFromHtml(html) {
+            const temp = document.createElement('div');
+            temp.innerHTML = html || '';
+            return (temp.innerText || temp.textContent || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function escapeHtml(value) {
+            const div = document.createElement('div');
+            div.textContent = value || '';
+            return div.innerHTML;
+        }
+
+        function formatReaderDate(timestamp) {
+            try {
+                return new Date(timestamp).toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (err) {
+                return '';
+            }
+        }
+
+        function getSelectedTextClean() {
+            const selection = window.getSelection ? window.getSelection() : null;
+            if (!selection) return '';
+            return selection.toString().replace(/\s+/g, ' ').trim();
+        }
+
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise((resolve, reject) => {
+                try {
+                    const tempArea = document.createElement('textarea');
+                    tempArea.value = text;
+                    tempArea.setAttribute('readonly', '');
+                    tempArea.style.position = 'fixed';
+                    tempArea.style.left = '-9999px';
+                    tempArea.style.top = '0';
+                    document.body.appendChild(tempArea);
+                    tempArea.focus();
+                    tempArea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(tempArea);
+                    success ? resolve() : reject(new Error('Copie refusée'));
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+
+        function copySelectedExcerpt() {
+            const selectedText = getSelectedTextClean();
+            if (!selectedText) {
+                showPopup("Sélectionnez d'abord un extrait à copier.");
+                return;
+            }
+
+            const currentSection = getCurrentSectionObject();
+            const sourceTitle = currentSection ? currentSection.title : "Lecture";
+            const formatted = `“${selectedText}”\n\n— ${sourceTitle}, Le chrétien face à l'injustice`;
+
+            copyTextToClipboard(formatted)
+                .then(() => showPopup("Extrait copié."))
+                .catch(() => showPopup("Copie impossible sur ce navigateur."));
+        }
+
+        function addManualBookmark() {
+            const currentSection = getCurrentSectionObject();
+            if (!currentSection) {
+                showPopup("Aucune page active à marquer.");
+                return;
+            }
+
+            const activePageNode = document.getElementById(`section-page-${activeSecIndex}`);
+            const offset = getCurrentOffsetInSection();
+            const height = activePageNode ? Math.max(1, activePageNode.scrollHeight) : 1;
+            const percent = Math.min(100, Math.max(0, Math.round((offset / height) * 100)));
+
+            readerBookmarks.unshift({
+                id: `bm_${Date.now()}`,
+                sectionId: activeSecIndex,
+                title: currentSection.title,
+                offset: offset,
+                percent: percent,
+                createdAt: Date.now()
+            });
+
+            readerBookmarks = readerBookmarks.slice(0, 80);
+            saveReaderLibrary();
+            showPopup("Marque-page ajouté.");
+        }
+
+        function goToSavedPosition(sectionId, offset) {
+            if (sectionId < 1 || sectionId > manuscriptBook.length) return;
+            activeSecIndex = sectionId;
+            pendingRestoreOffsetInSection = Math.max(0, Number(offset) || 0);
+            closeReaderTools();
+            closeMobileDrawer();
+            updateDisplay({ restorePosition: true });
+        }
+
+        function deleteBookmark(bookmarkId) {
+            readerBookmarks = readerBookmarks.filter(item => item.id !== bookmarkId);
+            saveReaderLibrary();
+            renderBookmarksTool();
+            showPopup("Marque-page supprimé.");
+        }
+
+        function addFavoriteQuote() {
+            const selectedText = getSelectedTextClean();
+            const currentSection = getCurrentSectionObject();
+            if (!currentSection) {
+                showPopup("Aucune page active.");
+                return;
+            }
+
+            const text = selectedText || currentSection.quote || currentSection.title;
+            if (!text || text.trim().length < 3) {
+                showPopup("Aucune citation à enregistrer.");
+                return;
+            }
+
+            readerFavorites.unshift({
+                id: `fav_${Date.now()}`,
+                sectionId: activeSecIndex,
+                title: currentSection.title,
+                text: text.trim(),
+                createdAt: Date.now()
+            });
+
+            readerFavorites = readerFavorites.slice(0, 120);
+            saveReaderLibrary();
+            showPopup(selectedText ? "Citation sélectionnée ajoutée." : "Citation du chapitre ajoutée.");
+        }
+
+        function deleteFavorite(favoriteId) {
+            readerFavorites = readerFavorites.filter(item => item.id !== favoriteId);
+            saveReaderLibrary();
+            renderFavoritesTool();
+            showPopup("Citation favorite supprimée.");
+        }
+
+        function copyFavorite(favoriteId) {
+            const item = readerFavorites.find(fav => fav.id === favoriteId);
+            if (!item) return;
+            const formatted = `“${item.text}”\n\n— ${item.title}, Le chrétien face à l'injustice`;
+            copyTextToClipboard(formatted)
+                .then(() => showPopup("Citation copiée."))
+                .catch(() => showPopup("Copie impossible sur ce navigateur."));
+        }
+
+        function openReaderTools(mode) {
+            const modal = document.getElementById('reader-tools-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+
+            if (mode === 'search') renderSearchTool();
+            if (mode === 'bookmarks') renderBookmarksTool();
+            if (mode === 'favorites') renderFavoritesTool();
+        }
+
+        function closeReaderTools() {
+            const modal = document.getElementById('reader-tools-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function setReaderToolsTitle(value) {
+            const title = document.getElementById('reader-tools-title');
+            if (title) title.innerText = value;
+        }
+
+        function renderSearchTool() {
+            setReaderToolsTitle('Recherche dans le livre');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+            body.innerHTML = `
+                <div class="space-y-3">
+                    <input id="reader-search-input" type="search" placeholder="Rechercher un mot ou une phrase..." class="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-main)] font-sans-ui text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent)]" oninput="performBookSearch()">
+                    <div id="reader-search-results" class="space-y-2 max-h-[55vh] overflow-y-auto"></div>
+                </div>
+            `;
+            setTimeout(() => {
+                const input = document.getElementById('reader-search-input');
+                if (input) input.focus();
+            }, 50);
+        }
+
+        function performBookSearch() {
+            const input = document.getElementById('reader-search-input');
+            const resultsBox = document.getElementById('reader-search-results');
+            if (!input || !resultsBox) return;
+
+            const query = input.value.trim().toLowerCase();
+            if (query.length < 2) {
+                resultsBox.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Écrivez au moins 2 caractères.</p>';
+                return;
+            }
+
+            const matches = [];
+            manuscriptBook.forEach(section => {
+                const plain = getPlainTextFromHtml(section.nodes ? section.nodes.join('') : '');
+                const lower = plain.toLowerCase();
+                const foundAt = lower.indexOf(query);
+                if (foundAt !== -1) {
+                    const start = Math.max(0, foundAt - 70);
+                    const end = Math.min(plain.length, foundAt + query.length + 90);
+                    const snippet = `${start > 0 ? '...' : ''}${plain.slice(start, end)}${end < plain.length ? '...' : ''}`;
+                    matches.push({ section, snippet });
+                }
+            });
+
+            if (matches.length === 0) {
+                resultsBox.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Aucun résultat trouvé.</p>';
+                return;
+            }
+
+            resultsBox.innerHTML = matches.map(item => `
+                <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
+                    <button onclick="goToSavedPosition(${item.section.id}, 0)" class="text-left w-full font-bold text-[var(--accent)] text-xs uppercase tracking-wider">${escapeHtml(item.section.title)}</button>
+                    <p class="text-xs leading-relaxed text-[var(--text-main)]">${escapeHtml(item.snippet)}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderBookmarksTool() {
+            setReaderToolsTitle('Mes marque-pages');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+
+            if (readerBookmarks.length === 0) {
+                body.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Aucun marque-page enregistré.</p>';
+                return;
+            }
+
+            body.innerHTML = `<div class="space-y-2 max-h-[60vh] overflow-y-auto">${readerBookmarks.map(item => `
+                <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
+                    <div class="flex justify-between gap-3">
+                        <button onclick="goToSavedPosition(${item.sectionId}, ${Math.round(Number(item.offset) || 0)})" class="text-left font-bold text-[var(--accent)] text-xs uppercase tracking-wider flex-1">${escapeHtml(item.title)}</button>
+                        <button onclick="deleteBookmark('${item.id}')" class="text-red-500 text-xs"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    <p class="text-[10px] text-[var(--text-muted)]">Position ${item.percent || 0}% — ${formatReaderDate(item.createdAt)}</p>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function renderFavoritesTool() {
+            setReaderToolsTitle('Mes citations favorites');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+
+            if (readerFavorites.length === 0) {
+                body.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Aucune citation favorite enregistrée.</p>';
+                return;
+            }
+
+            body.innerHTML = `<div class="space-y-2 max-h-[60vh] overflow-y-auto">${readerFavorites.map(item => `
+                <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
+                    <p class="text-sm leading-relaxed font-serif italic">“${escapeHtml(item.text)}”</p>
+                    <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">${escapeHtml(item.title)} — ${formatReaderDate(item.createdAt)}</p>
+                    <div class="flex gap-2">
+                        <button onclick="goToSavedPosition(${item.sectionId}, 0)" class="flex-1 py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Ouvrir</button>
+                        <button onclick="deleteFavorite('${item.id}')" class="px-3 py-2 rounded-lg border border-red-500/30 text-red-500 text-[10px] font-bold uppercase hover:bg-red-500/5"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function selectionIsInsideReader(selection) {
+            const viewport = document.getElementById('reader-viewport');
+            if (!viewport || !selection || selection.rangeCount === 0) return false;
+            const node = selection.anchorNode;
+            return !!(node && viewport.contains(node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement));
+        }
+
+        function updateSelectionActionMenu() {
+            const menu = document.getElementById('selection-action-menu');
+            if (!menu) return;
+
+            const selection = window.getSelection ? window.getSelection() : null;
+            const selectedText = selection ? selection.toString().trim() : '';
+
+            if (!selection || !selectedText || selectedText.length < 2 || !selectionIsInsideReader(selection)) {
+                hideSelectionActionMenu();
+                return;
+            }
+
+            try {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                if (!rect || (!rect.width && !rect.height)) {
+                    hideSelectionActionMenu();
+                    return;
+                }
+
+                const menuWidthSafety = 12;
+                let left = rect.left + (rect.width / 2);
+                left = Math.max(menuWidthSafety, Math.min(window.innerWidth - menuWidthSafety, left));
+
+                let top = rect.top - 56;
+                if (top < 12) top = rect.bottom + 12;
+
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
+                menu.classList.add('active');
+            } catch (err) {
+                hideSelectionActionMenu();
+            }
+        }
+
+        function hideSelectionActionMenu() {
+            const menu = document.getElementById('selection-action-menu');
+            if (menu) menu.classList.remove('active');
+        }
+
+        function addSelectedTextToFavoritesFromMenu() {
+            addFavoriteQuote();
+            hideSelectionActionMenu();
+        }
+
+        function addBookmarkFromSelectionMenu() {
+            addManualBookmark();
+            hideSelectionActionMenu();
+        }
+
+        // 5. BOUTONS MOBILE ACTIONS & DRAWER
+        function openMobileDrawer(mode) {
+            const overlay = document.getElementById('mobile-drawer-overlay');
+            const drawer = document.getElementById('mobile-drawer-content');
+            const inner = document.getElementById('drawer-inner-body');
+
+            overlay.classList.add('active');
+            drawer.classList.add('active');
+
+            if (mode === 'sommaire') {
+                let listHtml = `<div class="space-y-1.5 max-h-[50vh] overflow-y-auto font-sans-ui text-xs">`;
+                manuscriptBook.forEach(s => {
+                    listHtml += `
+                        <button onclick="jumpToSection(${s.id}); closeMobileDrawer();" class="w-full p-3.5 text-left rounded-xl bg-[var(--bg-secondary)] flex justify-between items-center ${activeSecIndex === s.id ? 'border border-[var(--accent)] font-bold text-[var(--accent)]' : 'text-[var(--text-main)]'}">
+                            <span class="truncate">${s.id}. ${s.title}</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    `;
+                });
+                listHtml += `</div>`;
+                inner.innerHTML = `
+                    <p class="font-cinzel text-xs tracking-wider text-[var(--accent)] font-bold uppercase mb-3">Table des matières</p>
+                    <div class="h-[1px] bg-[var(--border-color)] mb-4"></div>
+                    ${listHtml}
+                `;
+            } else if (mode === 'format') {
+                inner.innerHTML = `
+                    <p class="font-cinzel text-xs tracking-wider text-[var(--accent)] font-bold uppercase mb-3">Format de lecture</p>
+                    <div class="h-[1px] bg-[var(--border-color)] mb-5"></div>
+                    <div class="space-y-4">
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider block">Palette du Lecteur</span>
+                            <div class="grid grid-cols-4 gap-2 text-xs font-sans-ui text-center">
+                                <button onclick="setTheme('ivoire'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[#FCFBF7] border text-slate-800 font-medium">Ivoire</button>
+                                <button onclick="setTheme('sauge'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[#F3F5F2] border text-slate-800 font-medium">Sauge</button>
+                                <button onclick="setTheme('argile'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[#FAF6F0] border text-[#332621] font-medium">Argile</button>
+                                <button onclick="setTheme('nuit'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[#121212] border text-white font-medium">Nuit</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider block">Taille de la police</span>
+                            <div class="flex items-center justify-between bg-[var(--bg-secondary)] rounded-xl p-1 border border-[var(--border-color)] font-sans-ui">
+                                <button onclick="adjustFontSize(-1)" class="w-12 h-10 flex items-center justify-center rounded-lg text-sm font-bold text-[var(--text-main)] hover:bg-[var(--accent-light)]">A-</button>
+                                <span id="mobile-font-indicator" class="text-xs font-semibold text-[var(--text-muted)]">${fontScale}%</span>
+                                <button onclick="adjustFontSize(1)" class="w-12 h-10 flex items-center justify-center rounded-lg text-sm font-bold text-[var(--text-main)] hover:bg-[var(--accent-light)]">A+</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider block">Interligne</span>
+                            <div class="grid grid-cols-3 gap-2 text-xs font-sans-ui text-center">
+                                <button onclick="setReaderLineHeight('compact')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Compact</button>
+                                <button onclick="setReaderLineHeight('normal')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Normal</button>
+                                <button onclick="setReaderLineHeight('comfort')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Confort</button>
+                            </div>
+                            <span id="mobile-line-height-indicator" class="font-sans-ui text-[10px] text-[var(--text-muted)]">${READER_LINE_HEIGHTS[readerLineHeight].label}</span>
+                        </div>
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-sans-ui text-[var(--text-muted)] uppercase tracking-wider block">Largeur de lecture</span>
+                            <div class="grid grid-cols-3 gap-2 text-xs font-sans-ui text-center">
+                                <button onclick="setReaderWidth('narrow')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Étroit</button>
+                                <button onclick="setReaderWidth('normal')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Normal</button>
+                                <button onclick="setReaderWidth('wide')" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Large</button>
+                            </div>
+                            <span id="mobile-width-indicator" class="font-sans-ui text-[10px] text-[var(--text-muted)]">${READER_WIDTHS[readerWidthMode].label}</span>
+                        </div>
+                    </div>
+                `;
+                applyReaderPreferences(true);
+            } else if (mode === 'outils') {
+                inner.innerHTML = `
+                    <p class="font-cinzel text-xs tracking-wider text-[var(--accent)] font-bold uppercase mb-3">Outils de lecture</p>
+                    <div class="h-[1px] bg-[var(--border-color)] mb-5"></div>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-2 text-xs font-sans-ui text-center">
+                            <button onclick="openReaderTools('search'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Recherche</button>
+                            <button onclick="addManualBookmark()" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Marquer</button>
+                            <button onclick="openReaderTools('bookmarks'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Marques</button>
+                            <button onclick="addFavoriteQuote()" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Favori</button>
+                            <button onclick="openReaderTools('favorites'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Favoris</button>
+                        </div>
+                        <button onclick="resetLiseuse()" class="w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-sans-ui text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
+                            Effacer la mémoire du livre
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function closeMobileDrawer() {
+            document.getElementById('mobile-drawer-overlay').classList.remove('active');
+            document.getElementById('mobile-drawer-content').classList.remove('active');
+        }
+
+        // 6. PINTEREST DESIGN STUDIO INTERACTIF
+        function openPinterestStudio() {
+            const modal = document.getElementById('pinterest-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('active');
+            }
+            const sectionObj = manuscriptBook.find(s => s.id === activeSecIndex);
+            if (sectionObj) {
+                document.getElementById('pin-text-input').value = sectionObj.quote || sectionObj.title;
+            }
+            drawPinCard();
+        }
+
+        function closePinterestStudio() {
+            const modal = document.getElementById('pinterest-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('active');
+            }
+        }
+
+        function setPinPreset(theme) {
+            activePinPreset = theme;
+            drawPinCard();
+        }
+
+        function togglePinConfig(styleKey) {
+            pinConfig[styleKey] = !pinConfig[styleKey];
+            drawPinCard();
+        }
+
+        function drawPinCard() {
+            const textValue = document.getElementById('pin-text-input').value;
+            const card = document.getElementById('pin-canvas');
+            const quoteEl = document.getElementById('pin-canvas-text');
+            const border = document.getElementById('pin-canvas-border');
+            const symbol = document.getElementById('pin-canvas-symbol');
+
+            quoteEl.innerText = textValue || "Sélectionnez ou écrivez un extrait précieux de votre lecture...";
+
+            card.className = "pinterest-card";
+            if (activePinPreset === 'ivoire') {
+                card.style.backgroundColor = '#FCFBF7'; card.style.color = '#1E1E1E';
+                border.style.borderColor = 'rgba(179, 149, 107, 0.4)'; symbol.style.color = '#B3956B';
+            } else if (activePinPreset === 'sauge') {
+                card.style.backgroundColor = '#ECEFEA'; card.style.color = '#24352B';
+                border.style.borderColor = 'rgba(134, 153, 138, 0.4)'; symbol.style.color = '#86998A';
+            } else if (activePinPreset === 'argile') {
+                card.style.backgroundColor = '#F4EDE4'; card.style.color = '#412E27';
+                border.style.borderColor = 'rgba(185, 141, 117, 0.4)'; symbol.style.color = '#B98D75';
+            } else if (activePinPreset === 'nuit') {
+                card.style.backgroundColor = '#141414'; card.style.color = '#E5E1DA';
+                border.style.borderColor = 'rgba(212, 178, 133, 0.4)'; symbol.style.color = '#D4B285';
+            }
+
+            border.style.display = pinConfig.frame ? 'block' : 'none';
+            symbol.style.display = pinConfig.symbol ? 'block' : 'none';
+            quoteEl.style.fontStyle = pinConfig.italic ? 'italic' : 'normal';
+
+            if (textValue.length > 180) {
+                quoteEl.style.fontSize = '10px';
+            } else if (textValue.length > 110) {
+                quoteEl.style.fontSize = '12px';
+            } else {
+                quoteEl.style.fontSize = '14px';
+            }
+        }
+
+        // 7. TOAST POPUP NOTIFICATION TACTILE
+        function showPopup(message) {
+            const popup = document.getElementById('custom-popup');
+            popup.innerText = message;
+            popup.classList.add('active');
+            setTimeout(() => {
+                popup.classList.remove('active');
+            }, 3000);
+        }
+
+        // 8. ALGORITHME DE BALAYAGE TACTILE ULTRA-PRÉCIS
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        function handleTouchSwipe() {
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+
+            // N'autorise le défilement que si le geste est principalement horizontal
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > 75) {
+                    if (diffX < 0) {
+                        stepSection(1);  // Glisser vers la gauche -> page suivante
+                    } else {
+                        stepSection(-1); // Glisser vers la droite -> page précédente
+                    }
+                }
+            }
+        }
+
+        function stepSection(delta) {
+            jumpToSection(activeSecIndex + delta);
+        }
+    </script>
+</body>
+</html>
