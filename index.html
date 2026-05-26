@@ -265,6 +265,16 @@
             color: var(--accent);
         }
 
+
+        .reader-highlight {
+            background: rgba(255, 226, 120, 0.55);
+            color: inherit;
+            border-radius: 0.18em;
+            padding: 0 0.05em;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+
         /* Pinterest card style */
         .pinterest-card {
             width: 260px;
@@ -323,9 +333,145 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        .reader-support-block {
+            margin-top: 2.5rem;
+            padding: 1.25rem 1.25rem 1.1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+        }
+
+        .reader-support-block h4 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.85rem;
+            color: var(--accent);
+        }
+
+        .reader-support-block p,
+        .reader-support-block li {
+            font-family: var(--font-sans);
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+
+        .reader-support-block ul {
+            margin: 0;
+            padding-left: 1.1rem;
+        }
+
+        .reader-support-prayer {
+            margin-top: 1rem;
+            padding: 1rem 1.05rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+        }
+
+        .reader-plan-card {
+            padding: 0.95rem;
+            border-radius: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .reader-plan-card.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+        }
+
+        .reader-plan-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .reader-audio-clickable {
+            cursor: pointer;
+            border-radius: 0.65rem;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .reader-audio-clickable:hover {
+            background-color: var(--accent-light);
+        }
+
+        .reader-audio-active {
+            background-color: var(--accent-light);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 32%, transparent);
+        }
+
+        .reader-audio-status {
+            padding: 0.85rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-main);
+        }
+
+        body.immersive-reading #reading-header,
+        body.immersive-reading aside,
+        body.immersive-reading #mobile-navigation-bar {
+            display: none !important;
+        }
+
+        body.immersive-reading #reading-workspace {
+            max-width: 100% !important;
+        }
+
+        body.immersive-reading #reader-viewport {
+            padding-top: 1.5rem !important;
+            padding-bottom: 2rem !important;
+        }
+
+        .immersive-exit-button {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 80;
+            display: none;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.65rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--accent);
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+        }
+
+        body.immersive-reading .immersive-exit-button {
+            display: inline-flex;
+        }
+
+
     </style>
 </head>
 <body class="theme-ivoire min-h-screen flex flex-col antialiased">
+
+    <button id="immersive-exit-button" class="immersive-exit-button" onclick="exitFullscreenMode()">
+        <i class="fa-solid fa-compress"></i>
+        <span>Quitter</span>
+    </button>
 
     <!-- ÉCRAN D'ACCUEIL / IMPORTATION INITIALE -->
     <div id="import-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-[var(--bg-primary)] overflow-y-auto">
@@ -487,6 +633,33 @@
                             <button onclick="openReaderTools('favorites')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-heart"></i><span>Favoris</span>
                             </button>
+                            <button onclick="openReaderTools('notes')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-pen-to-square"></i><span>Notes</span>
+                            </button>
+                            <button onclick="addHighlightFromSelection()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-highlighter"></i><span>Surligner</span>
+                            </button>
+                            <button onclick="openReaderTools('highlights')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-marker"></i><span>Surlignages</span>
+                            </button>
+                            <button onclick="openReaderTools('plan')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-calendar-days"></i><span>Plan</span>
+                            </button>
+                            <button onclick="openReaderTools('audio')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-volume-high"></i><span>Audio</span>
+                            </button>
+                            <button onclick="toggleFullscreenMode()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-expand"></i><span>Plein écran</span>
+                            </button>
+                            <button onclick="toggleWakeLock()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-lightbulb"></i><span>Écran allumé</span>
+                            </button>
+                            <button onclick="openReaderTools('help')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-circle-question"></i><span>Aide</span>
+                            </button>
+                            <button onclick="openReaderTools('data')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-file-export"></i><span>Données</span>
+                            </button>
                         </div>
                     </div>
 
@@ -587,6 +760,7 @@
     <div id="selection-action-menu" class="selection-action-menu">
         <button onclick="addSelectedTextToFavoritesFromMenu()"><i class="fa-solid fa-star mr-1"></i> Favori</button>
         <button onclick="addBookmarkFromSelectionMenu()"><i class="fa-solid fa-bookmark mr-1"></i> Marque-page</button>
+        <button onclick="addHighlightFromSelectionMenu()"><i class="fa-solid fa-highlighter mr-1"></i> Surligner</button>
     </div>
 
     <!-- PINTEREST DESIGN STUDIO -->
@@ -661,12 +835,22 @@
         let readerWidthMode = 'normal';
         let readerBookmarks = [];
         let readerFavorites = [];
+        let readerNotes = {};
+        let readerHighlights = [];
+        let readerPlan = null;
+        let pinSourceLabel = "Le chrétien face à l\'injustice";
+        let audioParagraphMode = false;
+        let activeAudioIndex = -1;
+        let audioUtterance = null;
+        let wakeLockRef = null;
+        let wakeLockWanted = false;
+        let immersiveModeActive = false;
         let shouldRestoreSavedScroll = false;
         let pendingRestoreOffsetInSection = 0;
         let isProgrammaticScroll = false;
         let scrollSaveTimer = null;
         const READER_STATE_KEY = "liseuse_reader_state_v4";
-        const READER_LIBRARY_KEY = "liseuse_reader_library_v1";
+        const READER_LIBRARY_KEY = "liseuse_reader_library_v2";
         const READER_LINE_HEIGHTS = {
             compact: { value: 1.55, label: "Compact" },
             normal: { value: 1.8, label: "Normal" },
@@ -825,6 +1009,7 @@
 
         function applyReaderPreferences(skipSave = false) {
             document.body.className = `theme-${readerTheme} min-h-screen flex flex-col antialiased`;
+            if (immersiveModeActive) document.body.classList.add('immersive-reading');
             document.documentElement.style.setProperty('--reader-font-multiplier', `${fontScale / 100}`);
             document.documentElement.style.setProperty('--reader-line-height', `${READER_LINE_HEIGHTS[readerLineHeight].value}`);
             document.documentElement.style.setProperty('--reader-content-max-width', READER_WIDTHS[readerWidthMode].value);
@@ -921,7 +1106,12 @@
                     touchEndY = e.changedTouches[0].screenY;
                     handleTouchSwipe();
                 }, { passive: true });
+
+                viewport.addEventListener('click', handleReaderParagraphClick);
             }
+
+            document.addEventListener('fullscreenchange', syncFullscreenState);
+            document.addEventListener('webkitfullscreenchange', syncFullscreenState);
 
             document.addEventListener('selectionchange', () => {
                 setTimeout(updateSelectionActionMenu, 80);
@@ -942,7 +1132,11 @@
             window.addEventListener('pagehide', saveReaderState);
             window.addEventListener('beforeunload', saveReaderState);
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) saveReaderState();
+                if (document.hidden) {
+                    saveReaderState();
+                } else if (wakeLockWanted && !wakeLockRef) {
+                    requestWakeLock(false);
+                }
             });
         });
 
@@ -1345,8 +1539,10 @@
                 const pane = document.createElement('article');
                 pane.id = `section-page-${sec.id}`;
                 pane.className = `page-pane ${sec.id === activeSecIndex ? 'active' : ''}`;
-                pane.innerHTML = `<div class="book-section">${getRenderedSectionHtml(sec)}</div>`;
+                pane.innerHTML = `<div class="book-section">${getRenderedSectionHtml(sec)}${buildChapterCompanionHtml(sec)}</div>`;
                 pagesBox.appendChild(pane);
+                applyHighlightsToPage(pane, sec.id);
+                prepareAudioParagraphsForPage(pane);
 
                 // Création du lien dans le sommaire
                 const btn = document.createElement('button');
@@ -1368,6 +1564,7 @@
 
         function jumpToSection(id) {
             if (id < 1 || id > manuscriptBook.length) return;
+            stopAudioReading(false);
             activeSecIndex = id;
             pendingRestoreOffsetInSection = 0;
             updateDisplay({ restorePosition: false });
@@ -1382,6 +1579,7 @@
             document.querySelectorAll('.page-pane').forEach(el => el.classList.remove('active'));
             const activePageNode = document.getElementById(`section-page-${activeSecIndex}`);
             if (activePageNode) activePageNode.classList.add('active');
+            refreshAudioParagraphMarkers();
 
             // Marquer comme actif le lien du sommaire PC
             document.querySelectorAll('.pc-nav-item').forEach(el => el.classList.remove('bg-[var(--bg-secondary)]', 'text-[var(--text-main)]', 'border-l-4', 'border-[var(--accent)]'));
@@ -1460,10 +1658,16 @@
                 const parsed = JSON.parse(rawLibrary);
                 readerBookmarks = Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [];
                 readerFavorites = Array.isArray(parsed.favorites) ? parsed.favorites : [];
+                readerNotes = parsed.notes && typeof parsed.notes === 'object' && !Array.isArray(parsed.notes) ? parsed.notes : {};
+                readerHighlights = Array.isArray(parsed.highlights) ? parsed.highlights : [];
+                readerPlan = parsed.plan && typeof parsed.plan === 'object' ? parsed.plan : null;
             } catch (err) {
                 console.warn("Lecture des outils de lecture impossible", err);
                 readerBookmarks = [];
                 readerFavorites = [];
+                readerNotes = {};
+                readerHighlights = [];
+                readerPlan = null;
             }
         }
 
@@ -1471,7 +1675,11 @@
             try {
                 localStorage.setItem(READER_LIBRARY_KEY, JSON.stringify({
                     bookmarks: readerBookmarks,
-                    favorites: readerFavorites
+                    favorites: readerFavorites,
+                    notes: readerNotes,
+                    highlights: readerHighlights,
+                    plan: readerPlan,
+                    plan: readerPlan
                 }));
                 return true;
             } catch (err) {
@@ -1517,6 +1725,61 @@
             } catch (err) {
                 return '';
             }
+        }
+
+        function isCoverSection(sec) {
+            return !!sec && String(sec.title || '').trim().toLowerCase() === 'couverture';
+        }
+
+        function getTodayIsoDate() {
+            return new Date().toISOString().slice(0, 10);
+        }
+
+        function formatReaderDateShort(value) {
+            try {
+                return new Date(value).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (err) {
+                return value || '';
+            }
+        }
+
+        function getSectionMeditationFocus(sec) {
+            const plain = getPlainTextFromHtml(sec && sec.nodes ? sec.nodes.join('') : '');
+            const base = (sec && sec.quote ? sec.quote : plain || (sec ? sec.title : '') || '').trim();
+            return base.length > 160 ? `${base.slice(0, 157)}…` : base;
+        }
+
+        function buildChapterCompanionHtml(sec) {
+            if (!sec || isCoverSection(sec)) return '';
+
+            const safeTitle = escapeHtml(sec.title || 'ce chapitre');
+            const focus = escapeHtml(getSectionMeditationFocus(sec) || (sec.title || 'ce passage'));
+            const lowerTitle = escapeHtml((sec.title || 'ce chapitre').toLowerCase());
+
+            const questions = [
+                `Qu’est-ce que ce chapitre m’apprend sur Dieu, sa volonté ou sa sagesse ?`,
+                `Quelle vérité dois-je retenir aujourd’hui à partir de “${focus}” ?`,
+                `Quel pas concret puis-je faire aujourd’hui pour mettre ${lowerTitle} en pratique ?`
+            ];
+
+            const prayer = `Seigneur, merci pour ce chapitre sur ${lowerTitle}. Grave cette vérité dans mon cœur. Aide-moi à comprendre ta pensée, à vivre ce que j’ai lu aujourd’hui et à marcher avec foi, paix et obéissance. Amen.`;
+
+            return `
+                <section class="reader-support-block">
+                    <h4>Questions de méditation</h4>
+                    <ul class="space-y-2">
+                        ${questions.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                    <div class="reader-support-prayer">
+                        <h4 class="!mb-2">Prière après lecture</h4>
+                        <p>${prayer}</p>
+                    </div>
+                </section>
+            `;
         }
 
         function getSelectedTextClean() {
@@ -1651,6 +1914,141 @@
                 .catch(() => showPopup("Copie impossible sur ce navigateur."));
         }
 
+        function getReadablePlanSections() {
+            const sections = manuscriptBook.filter(sec => !isCoverSection(sec));
+            return sections.length > 0 ? sections : manuscriptBook.slice();
+        }
+
+        function createReadingPlan(days) {
+            const planDays = Number(days);
+            if (!Number.isFinite(planDays) || planDays < 1) return;
+            const sections = getReadablePlanSections();
+            if (sections.length === 0) {
+                showPopup('Aucun chapitre disponible.');
+                return;
+            }
+            readerPlan = {
+                days: planDays,
+                startDate: getTodayIsoDate(),
+                createdAt: Date.now(),
+                totalSections: sections.length
+            };
+            saveReaderLibrary();
+            renderReadingPlanTool();
+            showPopup(`Plan ${planDays} jours créé.`);
+        }
+
+        function clearReadingPlan() {
+            readerPlan = null;
+            saveReaderLibrary();
+            renderReadingPlanTool();
+            showPopup('Plan supprimé.');
+        }
+
+        function getReadingPlanEntries() {
+            if (!readerPlan || !readerPlan.days) return [];
+            const sections = getReadablePlanSections();
+            const total = sections.length;
+            const days = Math.max(1, Number(readerPlan.days) || 1);
+            const entries = [];
+
+            for (let day = 1; day <= days; day++) {
+                const startIndex = Math.floor(((day - 1) * total) / days);
+                const rawEnd = Math.floor((day * total) / days) - 1;
+                const endIndex = Math.max(startIndex, Math.min(total - 1, rawEnd));
+                const startSection = sections[startIndex] || sections[0];
+                const endSection = sections[endIndex] || startSection;
+                entries.push({
+                    day,
+                    startSectionId: startSection ? startSection.id : 1,
+                    endSectionId: endSection ? endSection.id : (startSection ? startSection.id : 1),
+                    startTitle: startSection ? startSection.title : '',
+                    endTitle: endSection ? endSection.title : ''
+                });
+            }
+            return entries;
+        }
+
+        function getCurrentPlanDayIndex() {
+            if (!readerPlan || !readerPlan.startDate) return 1;
+            const start = new Date(`${readerPlan.startDate}T00:00:00`);
+            const today = new Date(`${getTodayIsoDate()}T00:00:00`);
+            const diff = Math.floor((today - start) / 86400000) + 1;
+            const maxDay = Math.max(1, Number(readerPlan.days) || 1);
+            return Math.max(1, Math.min(maxDay, diff));
+        }
+
+        function renderReadingPlanTool() {
+            setReaderToolsTitle('Plan de lecture');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+
+            const presetButtons = [7, 14, 21, 30].map(days => `
+                <button onclick="createReadingPlan(${days})" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]">${days} jours</button>
+            `).join('');
+
+            if (!readerPlan) {
+                body.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs leading-relaxed text-[var(--text-muted)]">Choisissez un rythme simple pour avancer dans votre lecture.</p>
+                        <div class="grid grid-cols-2 gap-2">${presetButtons}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const entries = getReadingPlanEntries();
+            const todayDay = getCurrentPlanDayIndex();
+            const todayEntry = entries.find(item => item.day === todayDay) || entries[0];
+
+            body.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Plan actif</p>
+                                <p class="text-sm font-bold text-[var(--accent)]">${readerPlan.days} jours</p>
+                            </div>
+                            <span class="reader-plan-badge">Jour ${todayDay} / ${readerPlan.days}</span>
+                        </div>
+                        <p class="text-xs text-[var(--text-muted)]">Début : ${formatReaderDateShort(readerPlan.startDate)}</p>
+                        ${todayEntry ? `<button onclick="goToSavedPosition(${todayEntry.startSectionId}, 0)" class="w-full py-2.5 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-[10px] font-bold uppercase tracking-wider">Ouvrir la lecture du jour</button>` : ''}
+                        <button onclick="clearReadingPlan()" class="w-full py-2.5 rounded-xl border border-red-500/30 text-red-500 text-[10px] font-bold uppercase tracking-wider hover:bg-red-500/5">Supprimer le plan</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">${presetButtons}</div>
+                    <div class="space-y-2 max-h-[50vh] overflow-y-auto">${entries.map(item => `
+                        <div class="reader-plan-card ${item.day === todayDay ? 'active' : ''}">
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="text-xs font-bold uppercase tracking-wider text-[var(--accent)]">Jour ${item.day}</p>
+                                ${item.day === todayDay ? '<span class="reader-plan-badge">Aujourd’hui</span>' : ''}
+                            </div>
+                            <p class="text-xs text-[var(--text-main)]">${escapeHtml(item.startTitle)}${item.endSectionId !== item.startSectionId ? ` → ${escapeHtml(item.endTitle)}` : ''}</p>
+                            <button onclick="goToSavedPosition(${item.startSectionId}, 0)" class="w-full py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Ouvrir</button>
+                        </div>
+                    `).join('')}</div>
+                </div>
+            `;
+        }
+
+        function openPinterestStudioForContent(textValue, sourceLabel) {
+            const modal = document.getElementById('pinterest-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('active');
+            }
+            pinSourceLabel = sourceLabel || "Le chrétien face à l'injustice";
+            const input = document.getElementById('pin-text-input');
+            if (input) input.value = textValue || '';
+            closeReaderTools();
+            drawPinCard();
+        }
+
+        function openPinterestStudioFromFavorite(favoriteId) {
+            const item = readerFavorites.find(fav => fav.id === favoriteId);
+            if (!item) return;
+            openPinterestStudioForContent(item.text, item.title || "Le chrétien face à l'injustice");
+        }
+
         function openReaderTools(mode) {
             const modal = document.getElementById('reader-tools-modal');
             if (!modal) return;
@@ -1659,6 +2057,12 @@
             if (mode === 'search') renderSearchTool();
             if (mode === 'bookmarks') renderBookmarksTool();
             if (mode === 'favorites') renderFavoritesTool();
+            if (mode === 'notes') renderNotesTool();
+            if (mode === 'highlights') renderHighlightsTool();
+            if (mode === 'plan') renderReadingPlanTool();
+            if (mode === 'audio') renderAudioTool();
+            if (mode === 'help') renderHelpTool();
+            if (mode === 'data') renderReaderDataTool();
         }
 
         function closeReaderTools() {
@@ -1759,12 +2163,306 @@
                 <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
                     <p class="text-sm leading-relaxed font-serif italic">“${escapeHtml(item.text)}”</p>
                     <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">${escapeHtml(item.title)} — ${formatReaderDate(item.createdAt)}</p>
-                    <div class="flex gap-2">
-                        <button onclick="goToSavedPosition(${item.sectionId}, 0)" class="flex-1 py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Ouvrir</button>
-                        <button onclick="deleteFavorite('${item.id}')" class="px-3 py-2 rounded-lg border border-red-500/30 text-red-500 text-[10px] font-bold uppercase hover:bg-red-500/5"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="goToSavedPosition(${item.sectionId}, 0)" class="py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Ouvrir</button>
+                        <button onclick="openPinterestStudioFromFavorite('${item.id}')" class="py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Visuel</button>
+                        <button onclick="deleteFavorite('${item.id}')" class="py-2 rounded-lg border border-red-500/30 text-red-500 text-[10px] font-bold uppercase hover:bg-red-500/5"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
             `).join('')}</div>`;
+        }
+
+
+        function getVisibleActivePageNode() {
+            return document.getElementById(`section-page-${activeSecIndex}`);
+        }
+
+        function getTextNodesInElement(root) {
+            const nodes = [];
+            if (!root) return nodes;
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                acceptNode(node) {
+                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    const parent = node.parentElement;
+                    if (!parent) return NodeFilter.FILTER_REJECT;
+                    if (parent.closest('script, style, textarea, input, button, .selection-action-menu')) return NodeFilter.FILTER_REJECT;
+                    if (parent.closest('mark.reader-highlight')) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            let node;
+            while ((node = walker.nextNode())) nodes.push(node);
+            return nodes;
+        }
+
+        function normalizeReaderText(value) {
+            return String(value || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function findNormalizedRange(root, query) {
+            const normalizedQuery = normalizeReaderText(query);
+            if (!root || !normalizedQuery) return null;
+            const textNodes = getTextNodesInElement(root);
+            let normalized = '';
+            const map = [];
+
+            textNodes.forEach(node => {
+                const raw = node.nodeValue || '';
+                for (let offset = 0; offset < raw.length; offset++) {
+                    const ch = raw[offset];
+                    if (/\s/.test(ch)) {
+                        if (normalized && !normalized.endsWith(' ')) {
+                            normalized += ' ';
+                            map.push({ node, offset });
+                        }
+                    } else {
+                        normalized += ch;
+                        map.push({ node, offset });
+                    }
+                }
+            });
+
+            const startIndex = normalized.indexOf(normalizedQuery);
+            if (startIndex === -1) return null;
+            const endIndex = startIndex + normalizedQuery.length - 1;
+            const startMap = map[startIndex];
+            const endMap = map[endIndex];
+            if (!startMap || !endMap) return null;
+
+            const range = document.createRange();
+            range.setStart(startMap.node, startMap.offset);
+            range.setEnd(endMap.node, endMap.offset + 1);
+            return range;
+        }
+
+        function wrapRangeWithHighlight(range, highlightId) {
+            if (!range || range.collapsed) return false;
+            const mark = document.createElement('mark');
+            mark.className = 'reader-highlight';
+            mark.dataset.highlightId = highlightId;
+            try {
+                const fragment = range.extractContents();
+                mark.appendChild(fragment);
+                range.insertNode(mark);
+                return true;
+            } catch (err) {
+                console.warn('Surlignage impossible pour cette sélection', err);
+                return false;
+            }
+        }
+
+        function applyHighlightsToPage(pageNode, sectionId) {
+            if (!pageNode || !Array.isArray(readerHighlights)) return;
+            const sectionHighlights = readerHighlights.filter(item => Number(item.sectionId) === Number(sectionId));
+            sectionHighlights.forEach(item => {
+                if (!item || !item.text || pageNode.querySelector(`mark.reader-highlight[data-highlight-id="${item.id}"]`)) return;
+                const range = findNormalizedRange(pageNode, item.text);
+                if (range) wrapRangeWithHighlight(range, item.id);
+            });
+        }
+
+        function addHighlightFromSelection() {
+            const selection = window.getSelection ? window.getSelection() : null;
+            const selectedText = selection ? normalizeReaderText(selection.toString()) : '';
+            const currentSection = getCurrentSectionObject();
+
+            if (!selection || !selectedText || selectedText.length < 2 || !selectionIsInsideReader(selection)) {
+                showPopup('Sélectionnez d’abord un passage à surligner.');
+                return;
+            }
+            if (!currentSection) {
+                showPopup('Aucune page active.');
+                return;
+            }
+
+            const highlightId = `hl_${Date.now()}`;
+            readerHighlights.unshift({
+                id: highlightId,
+                sectionId: activeSecIndex,
+                title: currentSection.title,
+                text: selectedText,
+                createdAt: Date.now()
+            });
+            readerHighlights = readerHighlights.slice(0, 200);
+            saveReaderLibrary();
+
+            try {
+                const range = selection.rangeCount ? selection.getRangeAt(0) : null;
+                const activePage = getVisibleActivePageNode();
+                if (range && activePage && activePage.contains(range.commonAncestorContainer)) {
+                    wrapRangeWithHighlight(range.cloneRange(), highlightId);
+                } else if (activePage) {
+                    applyHighlightsToPage(activePage, activeSecIndex);
+                }
+                selection.removeAllRanges();
+            } catch (err) {
+                const activePage = getVisibleActivePageNode();
+                if (activePage) applyHighlightsToPage(activePage, activeSecIndex);
+            }
+
+            hideSelectionActionMenu();
+            showPopup('Passage surligné.');
+        }
+
+        function deleteHighlight(highlightId) {
+            const currentOffset = getCurrentOffsetInSection();
+            readerHighlights = readerHighlights.filter(item => item.id !== highlightId);
+            saveReaderLibrary();
+            pendingRestoreOffsetInSection = currentOffset;
+            compileAndBuild({ restorePosition: true });
+            renderHighlightsTool();
+            showPopup('Surlignage supprimé.');
+        }
+
+        function renderHighlightsTool() {
+            setReaderToolsTitle('Mes surlignages');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+
+            if (readerHighlights.length === 0) {
+                body.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Aucun passage surligné.</p>';
+                return;
+            }
+
+            body.innerHTML = `<div class="space-y-2 max-h-[60vh] overflow-y-auto">${readerHighlights.map(item => `
+                <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-2">
+                    <p class="text-sm leading-relaxed font-serif"><mark class="reader-highlight">${escapeHtml(item.text)}</mark></p>
+                    <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">${escapeHtml(item.title)} — ${formatReaderDate(item.createdAt)}</p>
+                    <div class="flex gap-2">
+                        <button onclick="goToSavedPosition(${Number(item.sectionId) || 1}, 0)" class="flex-1 py-2 rounded-lg border border-[var(--border-color)] text-[10px] font-bold uppercase hover:bg-[var(--accent-light)]">Ouvrir</button>
+                        <button onclick="deleteHighlight('${item.id}')" class="px-3 py-2 rounded-lg border border-red-500/30 text-red-500 text-[10px] font-bold uppercase hover:bg-red-500/5"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function renderNotesTool() {
+            const currentSection = getCurrentSectionObject();
+            setReaderToolsTitle('Notes personnelles');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+
+            if (!currentSection) {
+                body.innerHTML = '<p class="text-[var(--text-muted)] text-xs">Aucune page active.</p>';
+                return;
+            }
+
+            const noteValue = readerNotes[String(activeSecIndex)] || '';
+            body.innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">${escapeHtml(currentSection.title)}</p>
+                    <textarea id="reader-note-input" class="w-full min-h-[220px] p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-main)] font-sans-ui text-sm leading-relaxed focus:outline-none focus:ring-1 focus:ring-[var(--accent)] resize-y" placeholder="Écris tes notes personnelles pour ce chapitre...">${escapeHtml(noteValue)}</textarea>
+                    <div class="flex gap-2">
+                        <button onclick="saveCurrentChapterNote()" class="flex-1 py-2.5 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-[10px] font-bold uppercase tracking-wider">Enregistrer</button>
+                        <button onclick="clearCurrentChapterNote()" class="px-4 py-2.5 rounded-xl border border-red-500/30 text-red-500 text-[10px] font-bold uppercase tracking-wider hover:bg-red-500/5">Effacer</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveCurrentChapterNote() {
+            const input = document.getElementById('reader-note-input');
+            if (!input) return;
+            const key = String(activeSecIndex);
+            const value = input.value || '';
+            if (value.trim()) {
+                readerNotes[key] = value;
+            } else {
+                delete readerNotes[key];
+            }
+            saveReaderLibrary();
+            showPopup('Note enregistrée.');
+        }
+
+        function clearCurrentChapterNote() {
+            const key = String(activeSecIndex);
+            delete readerNotes[key];
+            saveReaderLibrary();
+            renderNotesTool();
+            showPopup('Note effacée.');
+        }
+
+        function renderReaderDataTool() {
+            setReaderToolsTitle('Sauvegarde des données');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+            body.innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-xs leading-relaxed text-[var(--text-muted)]">Exportez ou importez vos marque-pages, favoris, notes, surlignages, plan de lecture et préférences de lecture.</p>
+                    <button onclick="exportReaderData()" class="w-full py-3 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-[10px] font-bold uppercase tracking-wider">Exporter mes données</button>
+                    <label class="w-full py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-main)] text-[10px] font-bold uppercase tracking-wider flex items-center justify-center cursor-pointer">
+                        Importer mes données
+                        <input type="file" accept=".json,application/json" class="hidden" onchange="importReaderData(event)">
+                    </label>
+                </div>
+            `;
+        }
+
+        function exportReaderData() {
+            saveReaderState();
+            const payload = {
+                version: 2,
+                exportedAt: new Date().toISOString(),
+                bookTitle: "Le chrétien face à l'injustice",
+                readerState: loadReaderState() || {},
+                library: {
+                    bookmarks: readerBookmarks,
+                    favorites: readerFavorites,
+                    notes: readerNotes,
+                    highlights: readerHighlights,
+                    plan: readerPlan
+                }
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `donnees_liseuse_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showPopup('Export généré.');
+        }
+
+        function importReaderData(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onerror = () => showPopup('Import impossible.');
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    const library = imported.library || imported;
+                    if (!library || typeof library !== 'object') throw new Error('Format invalide');
+                    if (!confirm('Importer ces données et remplacer les données personnelles actuelles ?')) return;
+
+                    readerBookmarks = Array.isArray(library.bookmarks) ? library.bookmarks : [];
+                    readerFavorites = Array.isArray(library.favorites) ? library.favorites : [];
+                    readerNotes = library.notes && typeof library.notes === 'object' && !Array.isArray(library.notes) ? library.notes : {};
+                    readerHighlights = Array.isArray(library.highlights) ? library.highlights : [];
+                    readerPlan = library.plan && typeof library.plan === 'object' ? library.plan : null;
+                    saveReaderLibrary();
+
+                    if (imported.readerState && typeof imported.readerState === 'object') {
+                        localStorage.setItem(READER_STATE_KEY, JSON.stringify(imported.readerState));
+                        loadReaderState();
+                        applyReaderPreferences(true);
+                    }
+
+                    const currentOffset = getCurrentOffsetInSection();
+                    pendingRestoreOffsetInSection = currentOffset;
+                    compileAndBuild({ restorePosition: true });
+                    renderReaderDataTool();
+                    showPopup('Données importées.');
+                } catch (err) {
+                    console.warn('Import données impossible', err);
+                    showPopup('Fichier de données invalide.');
+                } finally {
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file, 'utf-8');
         }
 
         function selectionIsInsideReader(selection) {
@@ -1798,12 +2496,20 @@
                 let left = rect.left + (rect.width / 2);
                 left = Math.max(menuWidthSafety, Math.min(window.innerWidth - menuWidthSafety, left));
 
-                let top = rect.top - 56;
-                if (top < 12) top = rect.bottom + 12;
-
                 menu.style.left = `${left}px`;
-                menu.style.top = `${top}px`;
+                menu.style.top = `0px`;
                 menu.classList.add('active');
+
+                const menuRect = menu.getBoundingClientRect();
+                const bottomSafeArea = 92;
+                let top = rect.bottom + 16;
+                const maxTop = window.innerHeight - menuRect.height - bottomSafeArea;
+
+                if (top > maxTop) {
+                    top = Math.max(12, maxTop);
+                }
+
+                menu.style.top = `${top}px`;
             } catch (err) {
                 hideSelectionActionMenu();
             }
@@ -1821,6 +2527,11 @@
 
         function addBookmarkFromSelectionMenu() {
             addManualBookmark();
+            hideSelectionActionMenu();
+        }
+
+        function addHighlightFromSelectionMenu() {
+            addHighlightFromSelection();
             hideSelectionActionMenu();
         }
 
@@ -1903,6 +2614,15 @@
                             <button onclick="openReaderTools('bookmarks'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Marques</button>
                             <button onclick="addFavoriteQuote()" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Favori</button>
                             <button onclick="openReaderTools('favorites'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Favoris</button>
+                            <button onclick="openReaderTools('notes'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Notes</button>
+                            <button onclick="addHighlightFromSelection()" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Surligner</button>
+                            <button onclick="openReaderTools('highlights'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Surlignages</button>
+                            <button onclick="openReaderTools('plan'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Plan</button>
+                            <button onclick="openReaderTools('audio'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Audio</button>
+                            <button onclick="toggleFullscreenMode(); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Plein écran</button>
+                            <button onclick="toggleWakeLock(); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Écran allumé</button>
+                            <button onclick="openReaderTools('help'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Aide</button>
+                            <button onclick="openReaderTools('data'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Données</button>
                         </div>
                         <button onclick="resetLiseuse()" class="w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-sans-ui text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
                             Effacer la mémoire du livre
@@ -1917,7 +2637,321 @@
             document.getElementById('mobile-drawer-content').classList.remove('active');
         }
 
-        // 6. PINTEREST DESIGN STUDIO INTERACTIF
+        // 6. LECTURE AUDIO, PLEIN ÉCRAN, ÉCRAN ALLUMÉ ET AIDE RAPIDE
+        function isSpeechSupported() {
+            return typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+        }
+
+        function prepareAudioParagraphsForPage(pageNode) {
+            if (!pageNode) return;
+            const items = pageNode.querySelectorAll('.book-section p, .book-section blockquote, .book-section li');
+            items.forEach(el => {
+                if (el.closest('.reader-support-block')) return;
+                if (!normalizeReaderText(el.innerText || el.textContent || '')) return;
+                el.dataset.audioParagraph = 'true';
+            });
+        }
+
+        function getAudioParagraphElements() {
+            const pageNode = getVisibleActivePageNode();
+            if (!pageNode) return [];
+            return Array.from(pageNode.querySelectorAll('[data-audio-paragraph="true"]')).filter(el => {
+                if (!el || el.closest('.reader-support-block')) return false;
+                return normalizeReaderText(el.innerText || el.textContent || '').length > 0;
+            });
+        }
+
+        function refreshAudioParagraphMarkers() {
+            document.querySelectorAll('.reader-audio-clickable, .reader-audio-active').forEach(el => {
+                el.classList.remove('reader-audio-clickable', 'reader-audio-active');
+            });
+
+            const paragraphs = getAudioParagraphElements();
+            if (audioParagraphMode) {
+                paragraphs.forEach(el => el.classList.add('reader-audio-clickable'));
+            }
+            if (activeAudioIndex >= 0 && paragraphs[activeAudioIndex]) {
+                paragraphs[activeAudioIndex].classList.add('reader-audio-active');
+            }
+            updateAudioToolStatus();
+        }
+
+        function handleReaderParagraphClick(event) {
+            if (!audioParagraphMode) return;
+            if (event.target.closest('button, a, input, textarea, label, .selection-action-menu, .reader-support-block')) return;
+
+            const target = event.target.closest('[data-audio-paragraph="true"]');
+            const activePage = getVisibleActivePageNode();
+            if (!target || !activePage || !activePage.contains(target)) return;
+
+            const paragraphs = getAudioParagraphElements();
+            const index = paragraphs.indexOf(target);
+            if (index === -1) return;
+
+            event.preventDefault();
+            startAudioFromParagraph(index);
+        }
+
+        function setAudioParagraphMode(enabled) {
+            audioParagraphMode = Boolean(enabled);
+            if (!audioParagraphMode) activeAudioIndex = -1;
+            refreshAudioParagraphMarkers();
+            showPopup(audioParagraphMode ? 'Mode audio par paragraphe activé.' : 'Mode audio désactivé.');
+        }
+
+        function toggleAudioParagraphMode() {
+            setAudioParagraphMode(!audioParagraphMode);
+        }
+
+        function startAudioFromParagraph(index) {
+            if (!isSpeechSupported()) {
+                showPopup('Lecture audio non supportée sur ce navigateur.');
+                return;
+            }
+
+            const paragraphs = getAudioParagraphElements();
+            if (paragraphs.length === 0) {
+                showPopup('Aucun paragraphe lisible sur cette page.');
+                return;
+            }
+
+            const safeIndex = Math.min(Math.max(Number(index) || 0, 0), paragraphs.length - 1);
+            const text = normalizeReaderText(paragraphs[safeIndex].innerText || paragraphs[safeIndex].textContent || '');
+            if (!text) {
+                showPopup('Paragraphe vide.');
+                return;
+            }
+
+            try {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.95;
+                utterance.pitch = 1;
+                audioUtterance = utterance;
+                activeAudioIndex = safeIndex;
+                audioParagraphMode = true;
+                refreshAudioParagraphMarkers();
+
+                paragraphs[safeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                utterance.onend = () => {
+                    if (audioUtterance !== utterance) return;
+                    const nextIndex = activeAudioIndex + 1;
+                    if (nextIndex < getAudioParagraphElements().length) {
+                        startAudioFromParagraph(nextIndex);
+                    } else {
+                        stopAudioReading(false);
+                        showPopup('Fin de la lecture audio.');
+                    }
+                };
+
+                utterance.onerror = () => {
+                    if (audioUtterance === utterance) {
+                        stopAudioReading(false);
+                        showPopup('Lecture audio interrompue.');
+                    }
+                };
+
+                window.speechSynthesis.speak(utterance);
+                updateAudioToolStatus();
+            } catch (err) {
+                console.warn('Lecture audio impossible', err);
+                showPopup('Lecture audio impossible sur ce navigateur.');
+            }
+        }
+
+        function playAudioFromStart() {
+            setAudioParagraphMode(true);
+            startAudioFromParagraph(0);
+        }
+
+        function pauseAudioReading() {
+            if (!isSpeechSupported()) return;
+            try {
+                window.speechSynthesis.pause();
+                updateAudioToolStatus();
+                showPopup('Lecture audio en pause.');
+            } catch (err) {
+                showPopup('Pause audio impossible.');
+            }
+        }
+
+        function resumeAudioReading() {
+            if (!isSpeechSupported()) return;
+            try {
+                window.speechSynthesis.resume();
+                updateAudioToolStatus();
+                showPopup('Lecture audio reprise.');
+            } catch (err) {
+                showPopup('Reprise audio impossible.');
+            }
+        }
+
+        function stopAudioReading(disableMode = true) {
+            if (isSpeechSupported()) {
+                try { window.speechSynthesis.cancel(); } catch (err) {}
+            }
+            audioUtterance = null;
+            activeAudioIndex = -1;
+            if (disableMode) audioParagraphMode = false;
+            refreshAudioParagraphMarkers();
+        }
+
+        function moveAudioParagraph(delta) {
+            const paragraphs = getAudioParagraphElements();
+            if (paragraphs.length === 0) {
+                showPopup('Aucun paragraphe lisible.');
+                return;
+            }
+            const baseIndex = activeAudioIndex >= 0 ? activeAudioIndex : 0;
+            const nextIndex = Math.min(Math.max(baseIndex + delta, 0), paragraphs.length - 1);
+            startAudioFromParagraph(nextIndex);
+        }
+
+        function getAudioStatusText() {
+            if (!isSpeechSupported()) return 'Lecture audio non supportée sur ce navigateur.';
+            const total = getAudioParagraphElements().length;
+            if (!audioParagraphMode) return `Mode audio désactivé — ${total} paragraphes disponibles.`;
+            if (activeAudioIndex >= 0) return `Lecture : paragraphe ${activeAudioIndex + 1} / ${total}.`;
+            return `Mode audio activé — cliquez sur un paragraphe pour commencer.`;
+        }
+
+        function updateAudioToolStatus() {
+            const status = document.getElementById('audio-status-text');
+            if (status) status.innerText = getAudioStatusText();
+            const toggle = document.getElementById('audio-mode-toggle-label');
+            if (toggle) toggle.innerText = audioParagraphMode ? 'Désactiver les paragraphes' : 'Activer les paragraphes';
+        }
+
+        function renderAudioTool() {
+            setReaderToolsTitle('Lecture audio');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+            const supported = isSpeechSupported();
+            body.innerHTML = `
+                <div class="space-y-3">
+                    <div class="reader-audio-status">
+                        <p id="audio-status-text" class="text-xs leading-relaxed">${getAudioStatusText()}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="toggleAudioParagraphMode()" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]"><span id="audio-mode-toggle-label">${audioParagraphMode ? 'Désactiver les paragraphes' : 'Activer les paragraphes'}</span></button>
+                        <button onclick="playAudioFromStart()" class="py-2.5 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] text-[10px] font-bold uppercase tracking-wider ${supported ? '' : 'opacity-40'}">Lire le chapitre</button>
+                        <button onclick="pauseAudioReading()" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]">Pause</button>
+                        <button onclick="resumeAudioReading()" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]">Reprendre</button>
+                        <button onclick="moveAudioParagraph(-1)" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]">Paragraphe précédent</button>
+                        <button onclick="moveAudioParagraph(1)" class="py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent-light)]">Paragraphe suivant</button>
+                    </div>
+                    <button onclick="stopAudioReading(true)" class="w-full py-2.5 rounded-xl border border-red-500/30 text-red-500 text-[10px] font-bold uppercase tracking-wider hover:bg-red-500/5">Stop</button>
+                    <p class="text-[10px] text-[var(--text-muted)] leading-relaxed">Activez les paragraphes, puis cliquez directement sur un paragraphe du chapitre pour lancer la lecture à partir de cet endroit.</p>
+                </div>
+            `;
+            updateAudioToolStatus();
+        }
+
+        async function toggleFullscreenMode() {
+            const doc = document;
+            const root = document.documentElement;
+            const active = doc.fullscreenElement || doc.webkitFullscreenElement;
+            try {
+                if (!active) {
+                    if (root.requestFullscreen) await root.requestFullscreen();
+                    else if (root.webkitRequestFullscreen) await root.webkitRequestFullscreen();
+                    immersiveModeActive = true;
+                } else {
+                    if (doc.exitFullscreen) await doc.exitFullscreen();
+                    else if (doc.webkitExitFullscreen) await doc.webkitExitFullscreen();
+                    immersiveModeActive = false;
+                }
+            } catch (err) {
+                immersiveModeActive = !immersiveModeActive;
+            }
+            document.body.classList.toggle('immersive-reading', immersiveModeActive);
+            showPopup(immersiveModeActive ? 'Mode plein écran activé.' : 'Mode plein écran désactivé.');
+        }
+
+        async function exitFullscreenMode() {
+            try {
+                if (document.fullscreenElement || document.webkitFullscreenElement) {
+                    if (document.exitFullscreen) await document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+                }
+            } catch (err) {
+                console.warn('Sortie du plein écran impossible', err);
+            }
+            immersiveModeActive = false;
+            document.body.classList.remove('immersive-reading');
+            showPopup('Mode plein écran désactivé.');
+        }
+
+        function syncFullscreenState() {
+            immersiveModeActive = Boolean(document.fullscreenElement || document.webkitFullscreenElement || immersiveModeActive);
+            if (!(document.fullscreenElement || document.webkitFullscreenElement) && immersiveModeActive) {
+                immersiveModeActive = document.body.classList.contains('immersive-reading');
+            }
+            document.body.classList.toggle('immersive-reading', immersiveModeActive);
+        }
+
+        async function requestWakeLock(showMessage = true) {
+            if (!('wakeLock' in navigator)) {
+                wakeLockWanted = false;
+                if (showMessage) showPopup('Écran allumé non supporté sur ce navigateur.');
+                return false;
+            }
+            try {
+                wakeLockRef = await navigator.wakeLock.request('screen');
+                wakeLockWanted = true;
+                wakeLockRef.addEventListener('release', () => {
+                    wakeLockRef = null;
+                });
+                if (showMessage) showPopup('Écran gardé allumé.');
+                return true;
+            } catch (err) {
+                wakeLockRef = null;
+                wakeLockWanted = false;
+                if (showMessage) showPopup('Impossible de garder l’écran allumé.');
+                return false;
+            }
+        }
+
+        async function toggleWakeLock() {
+            if (wakeLockRef) {
+                try { await wakeLockRef.release(); } catch (err) {}
+                wakeLockRef = null;
+                wakeLockWanted = false;
+                showPopup('Écran allumé désactivé.');
+            } else {
+                await requestWakeLock(true);
+            }
+        }
+
+        function renderHelpTool() {
+            setReaderToolsTitle('Aide rapide');
+            const body = document.getElementById('reader-tools-body');
+            if (!body) return;
+            body.innerHTML = `
+                <div class="space-y-3 text-xs leading-relaxed text-[var(--text-main)]">
+                    <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                        <p class="font-bold text-[var(--accent)] uppercase tracking-wider text-[10px] mb-2">Lecture</p>
+                        <p>Le sommaire ouvre un chapitre. Les boutons Précédent et Suivant changent de chapitre. La liseuse mémorise automatiquement votre position.</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                        <p class="font-bold text-[var(--accent)] uppercase tracking-wider text-[10px] mb-2">Format</p>
+                        <p>Le menu FORMAT règle le thème, la taille du texte, l’interligne et la largeur de lecture.</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                        <p class="font-bold text-[var(--accent)] uppercase tracking-wider text-[10px] mb-2">Audio</p>
+                        <p>Ouvrez Audio, activez les paragraphes, puis cliquez sur un paragraphe pour commencer la lecture à cet endroit.</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                        <p class="font-bold text-[var(--accent)] uppercase tracking-wider text-[10px] mb-2">Données</p>
+                        <p>Exportez vos données pour sauvegarder vos notes, favoris, marque-pages, surlignages et plan de lecture.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 7. PINTEREST DESIGN STUDIO INTERACTIF
         function openPinterestStudio() {
             const modal = document.getElementById('pinterest-modal');
             if (modal) {
@@ -1926,7 +2960,10 @@
             }
             const sectionObj = manuscriptBook.find(s => s.id === activeSecIndex);
             if (sectionObj) {
+                pinSourceLabel = sectionObj.title || "Le chrétien face à l'injustice";
                 document.getElementById('pin-text-input').value = sectionObj.quote || sectionObj.title;
+            } else {
+                pinSourceLabel = "Le chrétien face à l'injustice";
             }
             drawPinCard();
         }
@@ -1955,8 +2992,10 @@
             const quoteEl = document.getElementById('pin-canvas-text');
             const border = document.getElementById('pin-canvas-border');
             const symbol = document.getElementById('pin-canvas-symbol');
+            const origin = document.getElementById('pin-canvas-origin');
 
             quoteEl.innerText = textValue || "Sélectionnez ou écrivez un extrait précieux de votre lecture...";
+            if (origin) origin.innerText = pinSourceLabel || "Le chrétien face à l'injustice";
 
             card.className = "pinterest-card";
             if (activePinPreset === 'ivoire') {
@@ -1986,7 +3025,7 @@
             }
         }
 
-        // 7. TOAST POPUP NOTIFICATION TACTILE
+        // 8. TOAST POPUP NOTIFICATION TACTILE
         function showPopup(message) {
             const popup = document.getElementById('custom-popup');
             popup.innerText = message;
@@ -1996,7 +3035,7 @@
             }, 3000);
         }
 
-        // 8. ALGORITHME DE BALAYAGE TACTILE ULTRA-PRÉCIS
+        // 9. ALGORITHME DE BALAYAGE TACTILE ULTRA-PRÉCIS
         let touchStartX = 0;
         let touchStartY = 0;
         let touchEndX = 0;
