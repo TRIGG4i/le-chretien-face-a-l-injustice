@@ -443,24 +443,23 @@
             top: 14px;
             right: 14px;
             z-index: 80;
-            display: none;
+            display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            padding: 0.65rem 0.9rem;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
             border-radius: 999px;
             border: 1px solid var(--border-color);
             background: var(--bg-primary);
             color: var(--accent);
             font-family: var(--font-sans);
-            font-size: 10px;
+            font-size: 14px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
             box-shadow: 0 8px 24px rgba(0,0,0,0.16);
         }
 
-        body.immersive-reading .immersive-exit-button {
-            display: inline-flex;
+        .immersive-exit-button:hover {
+            background: var(--accent-light);
         }
 
 
@@ -468,9 +467,8 @@
 </head>
 <body class="theme-ivoire min-h-screen flex flex-col antialiased">
 
-    <button id="immersive-exit-button" class="immersive-exit-button" onclick="exitFullscreenMode()">
-        <i class="fa-solid fa-compress"></i>
-        <span>Quitter</span>
+    <button id="immersive-exit-button" class="immersive-exit-button" onclick="toggleFullscreenMode()" title="Plein écran" aria-label="Plein écran">
+        <i id="immersive-toggle-icon" class="fa-solid fa-expand"></i>
     </button>
 
     <!-- ÉCRAN D'ACCUEIL / IMPORTATION INITIALE -->
@@ -647,9 +645,6 @@
                             </button>
                             <button onclick="openReaderTools('audio')" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-volume-high"></i><span>Audio</span>
-                            </button>
-                            <button onclick="toggleFullscreenMode()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-expand"></i><span>Plein écran</span>
                             </button>
                             <button onclick="toggleWakeLock()" class="py-2.5 bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] hover:bg-[var(--accent-light)] font-sans-ui text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-lightbulb"></i><span>Écran allumé</span>
@@ -1010,6 +1005,7 @@
         function applyReaderPreferences(skipSave = false) {
             document.body.className = `theme-${readerTheme} min-h-screen flex flex-col antialiased`;
             if (immersiveModeActive) document.body.classList.add('immersive-reading');
+            updateFullscreenButtonIcon();
             document.documentElement.style.setProperty('--reader-font-multiplier', `${fontScale / 100}`);
             document.documentElement.style.setProperty('--reader-line-height', `${READER_LINE_HEIGHTS[readerLineHeight].value}`);
             document.documentElement.style.setProperty('--reader-content-max-width', READER_WIDTHS[readerWidthMode].value);
@@ -2619,7 +2615,6 @@
                             <button onclick="openReaderTools('highlights'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Surlignages</button>
                             <button onclick="openReaderTools('plan'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Plan</button>
                             <button onclick="openReaderTools('audio'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Audio</button>
-                            <button onclick="toggleFullscreenMode(); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Plein écran</button>
                             <button onclick="toggleWakeLock(); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Écran allumé</button>
                             <button onclick="openReaderTools('help'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Aide</button>
                             <button onclick="openReaderTools('data'); closeMobileDrawer();" class="py-2.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] font-medium">Données</button>
@@ -2849,6 +2844,22 @@
             updateAudioToolStatus();
         }
 
+        function updateFullscreenButtonIcon() {
+            const icon = document.getElementById('immersive-toggle-icon');
+            const button = document.getElementById('immersive-exit-button');
+            if (!icon || !button) return;
+
+            if (immersiveModeActive) {
+                icon.className = 'fa-solid fa-compress';
+                button.title = 'Quitter le plein écran';
+                button.setAttribute('aria-label', 'Quitter le plein écran');
+            } else {
+                icon.className = 'fa-solid fa-expand';
+                button.title = 'Plein écran';
+                button.setAttribute('aria-label', 'Plein écran');
+            }
+        }
+
         async function toggleFullscreenMode() {
             const doc = document;
             const root = document.documentElement;
@@ -2867,6 +2878,7 @@
                 immersiveModeActive = !immersiveModeActive;
             }
             document.body.classList.toggle('immersive-reading', immersiveModeActive);
+            updateFullscreenButtonIcon();
             showPopup(immersiveModeActive ? 'Mode plein écran activé.' : 'Mode plein écran désactivé.');
         }
 
@@ -2881,6 +2893,7 @@
             }
             immersiveModeActive = false;
             document.body.classList.remove('immersive-reading');
+            updateFullscreenButtonIcon();
             showPopup('Mode plein écran désactivé.');
         }
 
@@ -2890,6 +2903,7 @@
                 immersiveModeActive = document.body.classList.contains('immersive-reading');
             }
             document.body.classList.toggle('immersive-reading', immersiveModeActive);
+            updateFullscreenButtonIcon();
         }
 
         async function requestWakeLock(showMessage = true) {
